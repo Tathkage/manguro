@@ -1,0 +1,53 @@
+# Ignore environment variable files
+**/.env
+**/.env.local
+**/.env.development.local
+**/.env.test.local
+**/.env.production.local
+
+# Ignore node_modules
+**/node_modules
+
+# Ignore log files
+**/logs
+*.log
+
+# Ignore Docker build files (unless they are specific and necessary for your repo)
+# Uncomment these lines if you do not want to track them
+# **/Dockerfile
+# **/docker-compose.yml
+
+# Ignore IDE-specific files
+**/.idea/
+**/.vscode/
+*.sublime-workspace
+*.sublime-project
+
+# Ignore OS-generated files
+.DS_Store
+Thumbs.db
+
+# Ignore build directories
+**/dist/
+**/build/
+**/.next/
+
+# Ignore Python bytecode files
+**/__pycache__/
+**/*.pyc
+
+# Ignore Python virtual environment
+**/venv/
+**/.venv/
+
+# Ignore SQLite database files
+**/*.sqlite3
+
+# Ignore test coverage files
+**/coverage/
+**/coverage-final.json
+**/.nyc_output/
+
+# Ignore lock files depending on your package manager
+# yarn.lock  # Uncomment if using npm instead of Yarn
+# package-lock.json  # Uncomment if using Yarn instead of npm
