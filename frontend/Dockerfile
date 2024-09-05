@@ -11,8 +11,8 @@ RUN npm install
 # Copy the rest of the application
 COPY . .
 
-# Build the application
-RUN npm run build
+# Expose the port (use a variable in the docker-compose file)
+EXPOSE ${FRONTEND_PORT}
 
-# Start the application
-CMD ["npm", "start"]
+# Start the development server for live reload
+CMD ["npm", "run", "dev"]

@@ -1,3 +1,4 @@
+version: "3.9"
 services:
   frontend:
     build: ./frontend
@@ -7,6 +8,10 @@ services:
       - backend
     environment:
       - NEXT_PUBLIC_API_URL=http://localhost:${BACKEND_PORT}
+    volumes:
+      - ./frontend:/app  # Mount your local frontend directory
+      - /app/node_modules  # Avoid overriding the node_modules inside the container
+    command: ["npm", "run", "dev"]  # Use Next.js dev mode for live reloading
 
   backend:
     build: ./backend
@@ -20,6 +25,10 @@ services:
       - DB_NAME=${POSTGRES_DB}
       - DB_PASSWORD=${POSTGRES_PASSWORD}
       - DB_PORT=${DB_PORT}
+    volumes:
+      - ./backend:/app  # Mount your local backend directory
+      - /app/node_modules  # Prevent overriding node_modules
+    command: ["npm", "run", "dev"]  # Use nodemon for live reload in development
 
   ml:
     build: ./ml
