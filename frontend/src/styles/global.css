@@ -1,0 +1,90 @@
+/* Default Styling */
+
+/* Body Styling */
+body {
+    background-color: #FFF2F8;
+    font-family: Arial, sans-serif;
+    color: #212121;
+    padding: 0;
+    margin: 0;
+    font-size: 1rem;
+}
+
+/* Header Styling */
+header {
+    background-color: #EAC4CF;
+    color: #212121;
+    padding: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+header h1 {
+    color: #212121;
+    font-size: 24px;
+    margin: 0;
+    padding: 0;
+    line-height: 1.2;
+}
+
+header nav ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+}
+
+/* Center the list items and SVG icons */
+header nav ul li {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0 5px;
+}
+
+header nav ul li a {
+    display: flex; /* Ensures the link and SVG are treated as a flexbox */
+    justify-content: center;
+    align-items: center;
+    text-decoration: none;
+    color: #333;
+}
+
+header nav ul li a svg {
+    fill: #212121;
+    width: 8vw;
+    height: auto;
+    max-width: 48px;
+    min-width: 24px;
+}
+
+/* Main Section */
+main {
+    padding: 40px 20px;
+}
+
+.section-rectangle {
+    background-color: #FFE9F1; /* Rectangle background color */
+    padding: 20px 0; /* Vertical padding for spacing */
+    width: 100vw; /* Span the entire viewport width */
+    text-align: left; /* Center the text inside the header */
+    position: relative; /* To ensure it appears in front of other elements */
+    left: 50%; /* Align the section to the center */
+  transform: translateX(-50%); /* Move it back to make it centered */
+    padding-left: 40px;
+}
+
+/* Footer Styling */
+footer {
+    background-color: #EAC4CF;
+    color: #212121;
+    padding: 10px;
+    text-align: center;
+    width: 100%;
+    bottom: 0;
+    font-size: 14px;
+    box-shadow: 0 -2px 4px rgba(0, 0, 0, 0.1);
+}

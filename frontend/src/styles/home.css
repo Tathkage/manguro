@@ -1,0 +1,11 @@
+.welcome-section {
+    max-width: 60vw;
+}
+
+main h1 .line1, .line2 {
+    display: block;
+}
+
+main h1 .line1 {
+    font-weight: normal;
+}

@@ -7,9 +7,13 @@ WORKDIR /app
 # Copy package.json and install dependencies
 COPY package*.json ./
 RUN npm install
+RUN npm install -g nodemon  # Install nodemon globally
 
 # Copy the rest of the application
 COPY . .
 
-# Start the backend server
-CMD ["node", "index.js"]
+# Expose the backend port
+EXPOSE ${BACKEND_PORT}
+
+# Start the backend server with nodemon for live reload
+CMD ["nodemon", "index.js"]
