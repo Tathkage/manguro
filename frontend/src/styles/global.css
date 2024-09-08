@@ -22,7 +22,7 @@ header {
 
 header h1 {
     color: #212121;
-    font-size: 24px;
+    font-size: 1.5rem;
     margin: 0;
     padding: 0;
     line-height: 1.2;
@@ -37,7 +37,6 @@ header nav ul {
     align-items: center;
 }
 
-/* Center the list items and SVG icons */
 header nav ul li {
     display: flex;
     justify-content: center;
@@ -53,7 +52,158 @@ header nav ul li a {
     color: #333;
 }
 
+header nav ul li button {
+    background: none;
+    border: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+}
+
 header nav ul li a svg {
+    fill: #212121;
+    width: 8vw;
+    height: auto;
+    max-width: 48px;
+    min-width: 24px;
+}
+
+header nav ul li button svg {
+    fill: #212121;
+    width: 8vw;
+    height: auto;
+    max-width: 48px;
+    min-width: 24px;
+}
+
+/* Menu Styling */
+
+body.menu-open main, body.menu-open footer {
+    filter: blur(6px); /* Apply blur effect */
+}
+
+/* No blur effect for the header */
+body.menu-open header {
+    filter: none; /* Ensure header remains clear */
+}
+
+.menu-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(255, 255, 255, 0);
+    /* backdrop-filter: blur(5px); */
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    padding-top: 25vw;
+    z-index: 999; /* Ensure the overlay is on top of everything */
+}
+
+.menu-content {
+    background-color: white;
+    padding: 20px;
+    border-radius: 10px;
+    text-align: center;
+    box-shadow: 0px 0px 4px 2px rgba(0, 0, 0, 0.25);
+    position: relative;
+}
+
+/* .menu-content .close-button {
+    position: absolute;
+    top: 5%;
+    right: 2%;
+    background: none;
+    border: none;
+    cursor: pointer;
+}
+
+.menu-content .close-button svg {
+    fill: #212121;
+    width: 7vw;
+    height: auto;
+    max-width: 48px;
+    min-width: 24px;
+} */
+
+.menu-content ul {
+    list-style: none;
+    padding: 0;
+}
+
+.menu-content ul li {
+    margin: 10px 0;
+}
+
+.menu-content button {
+    margin-bottom: 20px;
+}
+
+.menu-items {
+    list-style: none;
+    padding: 0;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    justify-items: center;
+    gap: 5px;
+    margin-top: 0%;
+    margin-bottom: 0%;
+    margin-right: 0%;
+}
+
+.menu-items li {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0;
+}
+
+.menu-content ul li {
+    margin: 0;
+}
+
+.menu-items li a,
+.menu-items li button {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    text-decoration: none;
+    background: none;
+    border: none;
+}
+
+.menu-items li button.close-button {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    margin: 0;
+}
+
+.menu-items li span {
+    font-size: 14px;
+    color: #212121;
+}
+
+.menu-items li a svg {
+    fill: #212121;
+    width: 8vw;
+    height: auto;
+    max-width: 48px;
+    min-width: 24px;
+}
+
+.menu-items li button svg {
     fill: #212121;
     width: 8vw;
     height: auto;
@@ -73,7 +223,7 @@ main {
     text-align: left; /* Center the text inside the header */
     position: relative; /* To ensure it appears in front of other elements */
     left: 50%; /* Align the section to the center */
-  transform: translateX(-50%); /* Move it back to make it centered */
+    transform: translateX(-50%); /* Move it back to make it centered */
     padding-left: 40px;
 }
 
