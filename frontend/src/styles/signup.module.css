@@ -1,0 +1,135 @@
+.mascot-container {
+    position: absolute;
+    top: 111px;
+    left: 50%;
+    transform: translateX(20%);
+    z-index: 1;
+}
+  
+.login-avatar {
+    width: 100px;
+    height: auto;
+}
+
+.signup-section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 70vh;
+    width: 80%;
+    margin-left: 10%;
+    margin-top: 20%;
+    margin-bottom: 20%;
+    background-color: #FFE9F1;
+    border-radius: 10px;
+    box-shadow: 0 0 4px 4px rgba(0, 0, 0, 0.15);
+}
+  
+.signup-form {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    width: 80%;
+}
+  
+.input-element {
+    display: flex;
+    flex-direction: column;
+    text-align: left;
+}
+  
+.input-element label {
+    font-size: 0.9rem;
+    margin-bottom: 5px;
+}
+  
+.input-element input {
+    padding: 10px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+}
+  
+.password-wrapper {
+    display: flex;
+    align-items: center;
+}
+  
+.password-wrapper input {
+    flex-grow: 1;
+}
+  
+.toggle-password {
+    position: absolute;
+    cursor: pointer;
+    color: #212121;
+    right: 25%;
+    font-weight: bold;
+}
+  
+.password-req {
+    font-size: 0.85rem;
+    color: #333;
+    margin: 0;
+    line-height: 0.5;
+}
+  
+.password-req-list {
+    list-style-type: disc;
+    font-size: 0.85rem;
+    margin-top: 0;
+    margin-bottom: 0;
+    padding-left: 12px;
+    line-height: 0.5;
+}
+  
+.guidelines-link {
+    font-size: 0.85rem;
+    color: #007bff;
+    text-decoration: underline;
+    cursor: pointer;
+}
+  
+.terms-wrapper {
+    margin-top: 20px;
+}
+  
+.terms-wrapper input {
+    margin-right: 10px;
+}
+  
+.terms-wrapper label a {
+    color: #007bff;
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+.buttons-wrapper {
+    margin: auto;
+    margin-top: 10%;
+    margin-bottom: 10%;
+    width: 68%;
+}
+
+.sign-up-button {
+    background-color: white;
+    padding: 5px 10px;
+    border-radius: 5px;
+    box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.25);
+    border: none;
+    cursor: pointer;
+    font-weight: bold;
+    margin-left: 0;
+    margin-right: 5%;
+    font-size: 1rem;
+}
+  
+.login-button {
+    background: none;
+    border: none;
+    font-style: italic;
+    cursor: pointer;
+    font-weight: bold;
+    margin-left: 5%;
+    font-size: 1rem;
+}

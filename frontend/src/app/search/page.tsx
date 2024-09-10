@@ -1,3 +1,7 @@
+'use client';
+
+import styles from '../../styles/search.module.css';
+
 export default function Search() {
   return (
     <>
@@ -7,12 +11,12 @@ export default function Search() {
       </section>
 
       <section>
-        <h1 className="section-rectangle">Top Watchlists</h1>
+        <h1 className='section-rectangle'>Top Watchlists</h1>
         <p>Content for Section 2</p>
       </section>
 
       <section>
-        <h1 className="section-rectangle">Top Anime</h1>
+        <h1 className='section-rectangle'>Top Anime</h1>
         <p>Content for Section 3</p>
       </section>
     </>

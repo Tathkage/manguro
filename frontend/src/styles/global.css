@@ -28,6 +28,10 @@ header h1 {
     line-height: 1.2;
 }
 
+header .title-link {
+    text-decoration: none;
+}
+
 header nav ul {
     list-style: none;
     margin: 0;
@@ -79,6 +83,35 @@ header nav ul li button svg {
     min-width: 24px;
 }
 
+header .buttons-wrapper {
+    margin: auto;
+    margin-top: 10%;
+    margin-bottom: 10%;
+    width: 87%;
+}
+
+header .login {
+    background-color: #FFF2F8;
+    padding: 5px 10px;
+    border-radius: 5px;
+    box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.25);
+    border: none;
+    cursor: pointer;
+    font-weight: bold;
+    width: 15vw;
+}
+
+header .sign-up {
+    background-color: #C4EEE4;
+    padding: 5px 10px;
+    border-radius: 5px;
+    box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.25);
+    border: none;
+    cursor: pointer;
+    font-weight: bold;
+    width: 15vw;
+}
+
 /* Menu Styling */
 
 body.menu-open main, body.menu-open footer {
@@ -113,23 +146,6 @@ body.menu-open header {
     box-shadow: 0px 0px 4px 2px rgba(0, 0, 0, 0.25);
     position: relative;
 }
-
-/* .menu-content .close-button {
-    position: absolute;
-    top: 5%;
-    right: 2%;
-    background: none;
-    border: none;
-    cursor: pointer;
-}
-
-.menu-content .close-button svg {
-    fill: #212121;
-    width: 7vw;
-    height: auto;
-    max-width: 48px;
-    min-width: 24px;
-} */
 
 .menu-content ul {
     list-style: none;

@@ -3,7 +3,7 @@
 import { useEffect, useState } from 'react';
 import Link from 'next/link'; // Import Link for navigation
 import '../styles/global.css'; // Import the global CSS here at the root level
-import '../styles/home.css';
+import styles from '../styles/home.module.css';
 import HomeIcon from '../../public/icons/home-icon.svg';
 import SearchIcon from '../../public/icons/search-icon.svg';
 import PersonIcon from '../../public/icons/person-icon.svg';
@@ -11,7 +11,6 @@ import MenuIcon from '../../public/icons/menu-icon.svg';
 import OpenMenuIcon from '../../public/icons/open-menu-icon.svg';
 import WatchlistsIcon from '../../public/icons/watchlists-icon.svg';
 import NotificationsIcon from '../../public/icons/notifications-icon.svg';
-import SettingsIcon from '../../public/icons/settings-icon.svg';
 import CloseIcon from '../../public/icons/x-icon.svg';
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
@@ -36,12 +35,19 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       </head>
       <body>
         <header>
-          <h1>manguro</h1>
+          <Link href="/" className="title-link">
+            <h1>manguro</h1>
+          </Link>
           <nav>
             <ul>
               <li>
-                <Link href="/">
-                  {isClient && <HomeIcon />}
+                <Link href="/login" className="login">
+                  Login
+                </Link>
+              </li>
+              <li>
+                <Link href="/signup" className="sign-up">
+                  Sign Up
                 </Link>
               </li>
               <li>
