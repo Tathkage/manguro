@@ -2,6 +2,7 @@ const express = require('express');
 const axios = require('axios');
 const { createHandler } = require('graphql-http/lib/use/express');
 const { getAnimeByTitle } = require('./anilistService');
+const { pool, insertAnime } = require('./db');
 const schema = require('./schema/schema');
 require('dotenv').config();
 
@@ -37,13 +38,12 @@ app.get('/callback', async (req, res) => {
         });
   
         const accessToken = response.data.access_token;
-        console.log('Access Token:', accessToken);
-
         const animeTitle = 'Attack on Titan';  // Example title
         const animeData = await getAnimeByTitle(animeTitle, accessToken);
 
         res.json(animeData);
 
+        await insertAnime(animeData);
     } 
     catch (error) {
         console.error('Error exchanging authorization code for access token:', error);

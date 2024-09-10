@@ -8,12 +8,30 @@ async function getAnimeByTitle(title, accessToken) {
                 title {
                     romaji
                     english
-                    native
                 }
-                description
+                coverImage {
+                    extraLarge
+                }
+                duration
                 episodes
+                startDate {
+                    year
+                    month
+                    day
+                }
+                endDate {
+                    year
+                    month
+                    day
+                }
+                season
                 seasonYear
-                genres
+                studios {
+                    nodes {
+                        name
+                    }
+                }
+                format
             }
         }
     `;
