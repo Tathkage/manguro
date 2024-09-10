@@ -1,0 +1,84 @@
+.login-section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 37vh;
+    width: 80%;
+    margin-left: 10%;
+    margin-top: 6%;
+    margin-bottom: 6%;
+    background-color: #FFE9F1;
+    border-radius: 10px;
+    box-shadow: 0 0 4px 4px rgba(0, 0, 0, 0.15);
+}
+  
+.login-form {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    width: 80%;
+}
+  
+.input-element {
+    display: flex;
+    flex-direction: column;
+    text-align: left;
+}
+  
+.input-element label {
+    font-size: 0.9rem;
+    margin-bottom: 5px;
+}
+  
+.input-element input {
+    padding: 10px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+}
+  
+.password-wrapper {
+    display: flex;
+    align-items: center;
+}
+  
+.password-wrapper input {
+    flex-grow: 1;
+}
+  
+.toggle-password {
+    position: absolute;
+    cursor: pointer;
+    color: #212121;
+    right: 25%;
+    font-weight: bold;
+}
+
+.buttons-wrapper {
+    margin: auto;
+    margin-top: 10%;
+    margin-bottom: 10%;
+    width: 63%;
+}
+
+.login-button {
+    background-color: white;
+    padding: 5px 10px;
+    border-radius: 5px;
+    box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.25);
+    border: none;
+    cursor: pointer;
+    font-weight: bold;
+    margin-left: 5%;
+    font-size: 1rem;
+}
+
+.sign-up-button {
+    background: none;
+    border: none;
+    font-style: italic;
+    cursor: pointer;
+    font-weight: bold;
+    margin-left: 5%;
+    font-size: 1rem;
+}
