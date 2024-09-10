@@ -1,13 +1,27 @@
+.mascot-container {
+    position: absolute;
+    top: 115px;
+    left: 50%;
+    transform: translateX(-120%);
+    z-index: 1;
+}
+  
+.login-avatar {
+    width: 100px;
+    height: auto;
+}
+
 .login-section {
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
+    position: relative;
     height: 37vh;
     width: 80%;
     margin-left: 10%;
-    margin-top: 6%;
-    margin-bottom: 6%;
+    margin-top: 20%;
+    margin-bottom: 20%;
     background-color: #FFE9F1;
     border-radius: 10px;
     box-shadow: 0 0 4px 4px rgba(0, 0, 0, 0.15);
