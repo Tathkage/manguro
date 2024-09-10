@@ -2,8 +2,8 @@ const express = require('express');
 const axios = require('axios');
 const { createHandler } = require('graphql-http/lib/use/express');
 const { getAnimeByTitle } = require('./anilistService');
-const { pool, insertAnime } = require('./db');
 const schema = require('./schema/schema');
+const { graphql } = require('graphql');
 require('dotenv').config();
 
 const app = express();
@@ -41,9 +41,36 @@ app.get('/callback', async (req, res) => {
         const animeTitle = 'Attack on Titan';  // Example title
         const animeData = await getAnimeByTitle(animeTitle, accessToken);
 
-        res.json(animeData);
+        const mutation = `
+            mutation {
+                addAnime(
+                    anime_id: ${animeData.id},
+                    name: "${animeData.title.english || animeData.title.romaji}",
+                    cover_image: "${animeData.coverImage.extraLarge}",
+                    episode_duration: ${animeData.duration || 0},
+                    episode_count: ${animeData.episodes || 0},
+                    start_date: "${animeData.startDate ? `${animeData.startDate.year}-${animeData.startDate.month}-${animeData.startDate.day}` : null}",
+                    end_date: "${animeData.endDate ? `${animeData.endDate.year}-${animeData.endDate.month}-${animeData.endDate.day}` : null}",
+                    year: ${animeData.seasonYear || 0},
+                    season: "${animeData.season || ''}",
+                    animation_studio: "${animeData.studios.nodes.length > 0 ? animeData.studios.nodes[0].name : ''}",
+                    format: "TV Show"
+                ) {
+                    anime_id
+                    name
+                }
+            }
+        `;
 
-        await insertAnime(animeData);
+        const result = await graphql({schema, source: mutation});
+
+        if (result.errors) {
+            console.error('Error inserting anime via GraphQL:', result.errors);
+            res.status(500).send('Error inserting anime into database.');
+        }
+        else {
+            res.json({ success: true, data: result.data });
+        }
     } 
     catch (error) {
         console.error('Error exchanging authorization code for access token:', error);
