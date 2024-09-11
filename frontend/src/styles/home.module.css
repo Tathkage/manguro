@@ -4,10 +4,11 @@
 
 /* Section 1: Welcome Section */
 .welcome-section {
+    margin: 0 auto;
     max-width: 100%;
-    padding-left: 5vw;
     display: flex;
-    justify-content: space-between;
+    justify-content: center;
+    align-items: center;
     position: relative;
     margin-bottom: 40px;
 }
@@ -32,25 +33,20 @@
 .welcome-section p {
     margin-top: 2px;
     margin-bottom: 0;
+    max-width: 300px;
 }
 
 .welcome-text {
+    margin-right: -25px;
     max-width: 60vw;
     position: relative;
     z-index: 1;
 }
 
 .welcome-image {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    max-width: 100%;
     width: 27vw;
+    max-width: 110px;
     height: auto;
-    position: absolute;
-    margin-left: 200px;
-    margin-top: -20px;
-    z-index: 0;
 }
 
 .welcome-image img {

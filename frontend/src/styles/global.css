@@ -99,6 +99,7 @@ header .login {
     cursor: pointer;
     font-weight: bold;
     width: 15vw;
+    font-size: 0.9rem;
 }
 
 header .sign-up {
@@ -110,6 +111,7 @@ header .sign-up {
     cursor: pointer;
     font-weight: bold;
     width: 15vw;
+    font-size: 0.9rem;
 }
 
 /* Menu Styling */

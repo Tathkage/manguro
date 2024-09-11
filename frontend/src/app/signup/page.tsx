@@ -24,18 +24,6 @@ export default function SignUp() {
   return (
 
     <>
-      <section>
-        <div className={styles['mascot-container']}>
-          <Image
-            src={maleMascot}
-            alt="Male Manguro Mascot"
-            width={500}
-            height={500}
-            className={styles['login-avatar']}
-          />
-        </div>
-      </section>
-
       <section className={styles['signup-section']}>
         <h1>Sign Up</h1>
         <form className={styles['signup-form']}>
