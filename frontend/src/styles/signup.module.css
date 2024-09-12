@@ -5,7 +5,7 @@
     justify-content: center;
     position: relative;
     width: 80%;
-    max-width: 300px;
+    max-width: 400px;
     margin: 20% auto;
     background-color: #FFE9F1;
     border-radius: 10px;
@@ -99,10 +99,10 @@
 }
 
 .buttons-wrapper {
-    margin: auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
     margin-top: 10%;
-    margin-bottom: 10%;
-    width: 75%;
 }
 
 .sign-up-button {

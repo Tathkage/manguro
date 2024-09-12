@@ -38,6 +38,13 @@
   --callout-border-rgb: 172, 175, 176;
   --card-rgb: 180, 185, 188;
   --card-border-rgb: 131, 134, 135;
+
+  --main-padding: clamp(3.75rem, 8vw, 6.25rem); 
+  --main-color: #FFF2F8;
+  --secondary-color: #EAC4CF;
+
+  --section-padding: clamp(3.75rem, 8vw, 6.25rem);
+  --gutter-padding: 16px;
 }
 
 @media (prefers-color-scheme: dark) {

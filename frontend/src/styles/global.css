@@ -20,9 +20,9 @@ header {
     align-items: center;
 }
 
-header h1 {
+header h3 {
     color: #212121;
-    font-size: 1.5rem;
+    font-size: clamp(1.5rem, 2.5vw, 2rem);
     margin: 0;
     padding: 0;
     line-height: 1.2;
@@ -49,7 +49,7 @@ header nav ul li {
 }
 
 header nav ul li a {
-    display: flex; /* Ensures the link and SVG are treated as a flexbox */
+    display: flex;
     justify-content: center;
     align-items: center;
     text-decoration: none;
@@ -90,39 +90,33 @@ header .buttons-wrapper {
     width: 87%;
 }
 
-header .login {
-    background-color: #FFF2F8;
-    padding: 5px 10px;
+header .login, header .sign-up {
+    padding: clamp(0.5rem, 1vw, 1rem) clamp(1rem, 2vw, 2rem);
     border-radius: 5px;
     box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.25);
     border: none;
     cursor: pointer;
     font-weight: bold;
-    width: 15vw;
-    font-size: 0.9rem;
+    font-size: clamp(0.9rem, 2.5vw, 1.1rem);
+    width: clamp(50px, 15vw, 200px);
+    max-width: 100%;
+}
+
+header .login {
+    background-color: #FFF2F8;
 }
 
 header .sign-up {
     background-color: #C4EEE4;
-    padding: 5px 10px;
-    border-radius: 5px;
-    box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.25);
-    border: none;
-    cursor: pointer;
-    font-weight: bold;
-    width: 15vw;
-    font-size: 0.9rem;
 }
 
 /* Menu Styling */
-
 body.menu-open main, body.menu-open footer {
-    filter: blur(6px); /* Apply blur effect */
+    filter: blur(6px);
 }
 
-/* No blur effect for the header */
 body.menu-open header {
-    filter: none; /* Ensure header remains clear */
+    filter: none;
 }
 
 .menu-overlay {
@@ -132,12 +126,11 @@ body.menu-open header {
     width: 100%;
     height: 100%;
     background-color: rgba(255, 255, 255, 0);
-    /* backdrop-filter: blur(5px); */
     display: flex;
     justify-content: center;
     align-items: flex-start;
     padding-top: 25vw;
-    z-index: 999; /* Ensure the overlay is on top of everything */
+    z-index: 999;
 }
 
 .menu-content {
@@ -167,8 +160,8 @@ body.menu-open header {
     padding: 0;
     display: grid;
     grid-template-columns: repeat(3, 1fr);
+    gap: clamp(5px, 2vw, 10px);
     justify-items: center;
-    gap: 5px;
     margin-top: 0%;
     margin-bottom: 0%;
     margin-right: 0%;
@@ -234,15 +227,27 @@ main {
     padding: 40px 20px;
 }
 
+h1 {
+    font-size: clamp(1.5rem, 3vw, 2.5rem);
+}
+  
+p {
+    font-size: clamp(1rem, 2vw, 1.25rem);
+}
+
+section {
+    padding: var(--section-padding) var(--gutter-padding);
+}
+
 .section-rectangle {
-    background-color: #FFE9F1; /* Rectangle background color */
-    padding: 20px 0; /* Vertical padding for spacing */
-    width: 100vw; /* Span the entire viewport width */
-    text-align: left; /* Center the text inside the header */
-    position: relative; /* To ensure it appears in front of other elements */
-    left: 50%; /* Align the section to the center */
-    transform: translateX(-50%); /* Move it back to make it centered */
-    padding-left: 40px;
+    background-color: #FFE9F1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0 auto;
+    text-align: center;
+    padding: 20px 0;
+    border-radius: 5px;
 }
 
 /* Footer Styling */
@@ -251,7 +256,6 @@ footer {
     color: #212121;
     padding: 10px;
     text-align: center;
-    width: 100%;
     bottom: 0;
     font-size: 14px;
     box-shadow: 0 -2px 4px rgba(0, 0, 0, 0.1);

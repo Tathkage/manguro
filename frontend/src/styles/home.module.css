@@ -4,13 +4,13 @@
 
 /* Section 1: Welcome Section */
 .welcome-section {
-    margin: 0 auto;
+    margin: 0 auto 40px;
     max-width: 100%;
     display: flex;
     justify-content: center;
     align-items: center;
     position: relative;
-    margin-bottom: 40px;
+    padding: var(--main-padding);
 }
 
 .welcome-section h1 {
@@ -44,7 +44,7 @@
 }
 
 .welcome-image {
-    width: 27vw;
+    width: clamp(100px, 10vw, 150px);
     max-width: 110px;
     height: auto;
 }
@@ -52,4 +52,8 @@
 .welcome-image img {
     max-width: 100%;
     height: auto;
+}
+
+@media (min-width: 700px) {
+
 }
