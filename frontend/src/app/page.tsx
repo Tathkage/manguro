@@ -1,5 +1,6 @@
 import Image from 'next/image';
-import WelcomeAvatar from '../../public/images/welcome-avatar.png';
+import FWelcomeAvatar from '../../public/images/feminine-welcome-avatar.png';
+import FWelcomeAvatar2 from '../../public/images/feminine-welcome-avatar-2.png';
 import styles from '../styles/home.module.css';
 
 export default function Home() {
@@ -7,6 +8,15 @@ export default function Home() {
     <>
       {/* ARIA Landmark: Welcome Section */}
       <section className={styles['welcome-section']} aria-labelledby="welcome-heading">
+      <div className={`${styles['welcome-image']} ${styles['masculine-avatar']}`}>
+          <Image
+            src={FWelcomeAvatar2}
+            alt="Illustration of the manguro mascot character welcoming users to Manguro"
+            width={212}
+            height={360}
+            priority={true} /* Prioritize image loading for better UX */
+          />
+        </div>
         <div className={styles['welcome-text']}>
           <h1 id="welcome-heading">
             <span className={styles['line1']}>Welcome to</span>
@@ -14,9 +24,9 @@ export default function Home() {
           </h1>
           <p>Create and share personalized anime watchlists, track your viewing progress, and receive tailored recommendations.</p>
         </div>
-        <div className={styles['welcome-image']}>
+        <div className={`${styles['welcome-image']} ${styles['feminine-avatar']}`}>
           <Image
-            src={WelcomeAvatar}
+            src={FWelcomeAvatar}
             alt="Illustration of the manguro mascot character welcoming users to Manguro"
             width={212}
             height={360}

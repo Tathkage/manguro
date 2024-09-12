@@ -37,6 +37,7 @@
 }
 
 .welcome-text {
+    margin-left: 25px;
     margin-right: -25px;
     max-width: 60vw;
     position: relative;
@@ -54,6 +55,38 @@
     height: auto;
 }
 
-@media (min-width: 700px) {
+.masculine-avatar {
+    display: none;
+}
 
+@media (min-width: 700px) {
+    .welcome-section {
+        width: 100%;
+    }
+
+    .masculine-avatar {
+        display: block;
+    }
+
+    .welcome-text {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        margin: 0 20px;
+        width: 50%;
+    }
+
+    .welcome-section h1 .line1, .welcome-section h1 .line2 {
+        display: inline-block;
+    }
+
+    .welcome-section h1 .line1 {
+        padding-right: 10px;
+    }
+
+    .welcome-section p {
+        text-align: center;
+        max-width: 900px;
+    }
 }
