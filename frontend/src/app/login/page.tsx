@@ -14,18 +14,6 @@ export default function Login() {
 
   return (
     <>
-      <section>
-        <div className={styles['mascot-container']}>
-          <Image
-            src={femaleMascot}
-            alt="Female Manguro Mascot"
-            width={500}
-            height={500}
-            className={styles['login-avatar']}
-          />
-        </div>
-      </section>
-
       <section className={styles['login-section']}>
         <h1>Login</h1>
         <form className={styles['login-form']}>

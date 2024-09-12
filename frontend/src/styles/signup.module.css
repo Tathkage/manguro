@@ -1,32 +1,26 @@
-.mascot-container {
-    position: absolute;
-    top: 111px;
-    left: 50%;
-    transform: translateX(20%);
-    z-index: 1;
-}
-  
-.login-avatar {
-    width: 100px;
-    height: auto;
-}
-
 .signup-section {
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    height: 70vh;
+    position: relative;
     width: 80%;
-    margin-left: 10%;
-    margin-top: 20%;
-    margin-bottom: 20%;
+    max-width: 400px;
+    margin: clamp(10px, 20%, 100px) auto;
     background-color: #FFE9F1;
     border-radius: 10px;
     box-shadow: 0 0 4px 4px rgba(0, 0, 0, 0.15);
+    padding-bottom: 50px;
+}
+
+.signup-section h1 {
+    position: relative;
+    margin-top: 10%;
+    margin-bottom: 10%;
 }
   
 .signup-form {
+    position: relative;
     display: flex;
     flex-direction: column;
     gap: 10px;
@@ -63,7 +57,7 @@
     position: absolute;
     cursor: pointer;
     color: #212121;
-    right: 25%;
+    right: 7%;
     font-weight: bold;
 }
   
@@ -80,7 +74,7 @@
     margin-top: 0;
     margin-bottom: 0;
     padding-left: 12px;
-    line-height: 0.5;
+    line-height: 1;
 }
   
 .guidelines-link {
@@ -105,10 +99,10 @@
 }
 
 .buttons-wrapper {
-    margin: auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
     margin-top: 10%;
-    margin-bottom: 10%;
-    width: 68%;
 }
 
 .sign-up-button {
@@ -120,16 +114,15 @@
     cursor: pointer;
     font-weight: bold;
     margin-left: 0;
-    margin-right: 5%;
     font-size: 1rem;
 }
   
 .login-button {
     background: none;
+    padding: 5px 10px;
     border: none;
     font-style: italic;
     cursor: pointer;
     font-weight: bold;
-    margin-left: 5%;
     font-size: 1rem;
 }
