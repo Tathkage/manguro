@@ -1,9 +1,8 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import Link from 'next/link'; // Import Link for navigation
-import '../styles/global.css'; // Import the global CSS here at the root level
-import '../styles/home.css';
+import Link from 'next/link';
+import '../styles/global.css';
 import HomeIcon from '../../public/icons/home-icon.svg';
 import SearchIcon from '../../public/icons/search-icon.svg';
 import PersonIcon from '../../public/icons/person-icon.svg';
@@ -11,7 +10,6 @@ import MenuIcon from '../../public/icons/menu-icon.svg';
 import OpenMenuIcon from '../../public/icons/open-menu-icon.svg';
 import WatchlistsIcon from '../../public/icons/watchlists-icon.svg';
 import NotificationsIcon from '../../public/icons/notifications-icon.svg';
-import SettingsIcon from '../../public/icons/settings-icon.svg';
 import CloseIcon from '../../public/icons/x-icon.svg';
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
@@ -25,7 +23,15 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   const toggleMenu = () => {
     setMenuOpen(!menuOpen);
     document.body.classList.toggle('menu-open', !menuOpen);
-  }
+    
+    // Focus management: return focus to the toggle button when closing the menu
+    if (!menuOpen) {
+      const menuButton = document.querySelector('.menu-button') as HTMLElement;
+      if (menuButton) {
+        menuButton.focus();
+      }
+    }
+  };
 
   return (
     <html lang="en">
@@ -36,17 +42,30 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       </head>
       <body>
         <header>
-          <h1>manguro</h1>
+          <Link href="/" className="title-link">
+            <h3>manguro</h3>
+          </Link>
           <nav>
             <ul>
               <li>
-                <Link href="/">
-                  {isClient && <HomeIcon />}
+                <Link href="/login" className="login" aria-label="Login">
+                  Login
                 </Link>
               </li>
               <li>
-                <button onClick={toggleMenu}>
-                  {isClient && (menuOpen ? <OpenMenuIcon /> : <MenuIcon />)}
+                <Link href="/signup" className="sign-up" aria-label="Sign Up">
+                  Sign Up
+                </Link>
+              </li>
+              <li>
+                <button
+                  onClick={toggleMenu}
+                  aria-expanded={menuOpen}
+                  aria-controls="menu"
+                  aria-label="Toggle Menu"
+                  className="menu-button"
+                >
+                  {isClient && (menuOpen ? <OpenMenuIcon aria-hidden="true" /> : <MenuIcon aria-hidden="true" />)}
                 </button>
               </li>
             </ul>
@@ -60,44 +79,44 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         </footer>
         
         {menuOpen && (
-          <div className="menu-overlay">
+          <div className="menu-overlay" role="dialog" aria-modal="true" id="menu">
             <div className="menu-content">
-              <ul className="menu-items">
-                {/* First Row */}
+              <ul className="menu-items" aria-label="Menu Items">
+
                 <li>
-                  <Link href="/" onClick={toggleMenu}>
-                    {isClient && <HomeIcon />}
+                  <Link href="/" onClick={toggleMenu} aria-label="Home">
+                    {isClient && <HomeIcon aria-hidden="true" />}
                     <span>Home</span>
                   </Link>
                 </li>
                 <li>
-                  <Link href="/watchlists" onClick={toggleMenu}>
-                    {isClient && <WatchlistsIcon />}
+                  <Link href="/watchlists" onClick={toggleMenu} aria-label="Watchlists">
+                    {isClient && <WatchlistsIcon aria-hidden="true" />}
                     <span>Watchlists</span>
                   </Link>
                 </li>
                 <li>
-                  <Link href="/search" onClick={toggleMenu}>
-                    {isClient && <SearchIcon />}
+                  <Link href="/search" onClick={toggleMenu} aria-label="Search">
+                    {isClient && <SearchIcon aria-hidden="true" />}
                     <span>Search</span>
                   </Link>
                 </li>
-                {/* Second Row */}
+
                 <li>
-                  <Link href="/account" onClick={toggleMenu}>
-                    {isClient && <PersonIcon />}
+                  <Link href="/account" onClick={toggleMenu} aria-label="Account">
+                    {isClient && <PersonIcon aria-hidden="true" />}
                     <span>Account</span>
                   </Link>
                 </li>
                 <li>
-                  <Link href="/notifications" onClick={toggleMenu}>
-                    {isClient && <NotificationsIcon />}
+                  <Link href="/notifications" onClick={toggleMenu} aria-label="Notifications">
+                    {isClient && <NotificationsIcon aria-hidden="true" />}
                     <span>Notifications</span>
                   </Link>
                 </li>
                 <li>
-                  <button className="close-button" onClick={toggleMenu}>
-                    {isClient && <CloseIcon />}
+                  <button className="close-button" onClick={toggleMenu} aria-label="Close Menu">
+                    {isClient && <CloseIcon aria-hidden="true" />}
                   </button>
                 </li>
               </ul>

@@ -1,0 +1,92 @@
+/* **** */
+/* Main */
+/* **** */
+
+/* Section 1: Welcome Section */
+.welcome-section {
+    margin: 0 auto 40px;
+    max-width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    padding: var(--main-padding);
+}
+
+.welcome-section h1 {
+    font-size: 2rem;
+}
+
+.welcome-section h1 .line1, .line2 {
+    display: block;
+}
+
+.welcome-section h1 .line1 {
+    font-weight: normal;
+}
+
+.welcome-section h1 {
+    margin-top: 0;
+    margin-bottom: 0;
+}
+
+.welcome-section p {
+    margin-top: 2px;
+    margin-bottom: 0;
+    max-width: 300px;
+}
+
+.welcome-text {
+    margin-left: 25px;
+    margin-right: -25px;
+    max-width: 60vw;
+    position: relative;
+    z-index: 1;
+}
+
+.welcome-image {
+    width: clamp(100px, 10vw, 150px);
+    max-width: 110px;
+    height: auto;
+}
+
+.welcome-image img {
+    max-width: 100%;
+    height: auto;
+}
+
+.masculine-avatar {
+    display: none;
+}
+
+@media (min-width: 700px) {
+    .welcome-section {
+        width: 100%;
+    }
+
+    .masculine-avatar {
+        display: block;
+    }
+
+    .welcome-text {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        margin: 0 20px;
+        width: 50%;
+    }
+
+    .welcome-section h1 .line1, .welcome-section h1 .line2 {
+        display: inline-block;
+    }
+
+    .welcome-section h1 .line1 {
+        padding-right: 10px;
+    }
+
+    .welcome-section p {
+        text-align: center;
+        max-width: 900px;
+    }
+}

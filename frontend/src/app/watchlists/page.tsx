@@ -1,3 +1,7 @@
+'use client';
+
+import styles from '../../styles/watchlists.module.css';
+
 export default function Search() {
   return (
     <>

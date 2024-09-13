@@ -1,3 +1,7 @@
+'use client';
+
+import styles from '../../styles/account.module.css';
+
 export default function Account() {
   return (
     <>
@@ -7,17 +11,17 @@ export default function Account() {
       </section>
 
       <section>
-        <h1 className="section-rectangle">Your Favorites</h1>
+        <h1 className='section-rectangle'>Your Favorites</h1>
         <p>Content for Section 1</p>
       </section>
 
       <section>
-        <h1 className="section-rectangle">Your Watchlists</h1>
+        <h1 className='section-rectangle'>Your Watchlists</h1>
         <p>Content for Section 2</p>
       </section>
 
       <section>
-        <h1 className="section-rectangle">Recently Watched</h1>
+        <h1 className='section-rectangle'>Recently Watched</h1>
         <p>Content for Section 3</p>
       </section>
     </>
