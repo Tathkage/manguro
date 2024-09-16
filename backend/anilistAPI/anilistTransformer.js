@@ -39,4 +39,26 @@ function transformAnimeData(animeList) {
     });
 }
 
-module.exports = { transformAnimeData }
+function transformGenreData(genreList) {
+    let nextId = 1;
+
+    return genreList.map(genre => {
+        return {
+            genre_id: nextId++,
+            name: genre
+        };
+    });
+}
+
+function transformTagData(tagList) {
+    let nextId = 1;
+
+    return tagList.map(tag => {
+        return {
+            tag_id: nextId++,
+            name: tag.name
+        };
+    });
+}
+
+module.exports = { transformAnimeData, transformGenreData, transformTagData }

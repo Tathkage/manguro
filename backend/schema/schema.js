@@ -24,6 +24,22 @@ const AnimeType = new GraphQLObjectType({
     })
 });
 
+const GenreType = new GraphQLObjectType({
+    name: 'Genre',
+    fields: () => ({
+        genre_id: { type: GraphQLInt },
+        name: { type: GraphQLString },
+    })
+});
+
+const TagType = new GraphQLObjectType({
+    name: 'Tag',
+    fields: () => ({
+        tag_id: { type: GraphQLInt },
+        name: { type: GraphQLString },
+    })
+});
+
 const RootQuery = new GraphQLObjectType({
     name: 'RootQueryType',
     fields: {
@@ -103,6 +119,60 @@ const Mutation = new GraphQLObjectType({
                 catch (err) {
                     console.error('Error inserting anime:', err);
                     throw new Error('Failed to insert anime');
+                }
+            }
+        },
+        addGenre: {
+            type: GenreType,
+            args: {
+                genre_id: { type: GraphQLInt },
+                name: { type: GraphQLString }   
+            },
+            async resolve(parent, args) {
+                try {
+                    const query = `
+                        INSERT INTO public.genres (genre_id, name)
+                        VALUES ($1, $2)
+                        ON CONFLICT (genre_id) DO NOTHING;
+                    `;
+
+                    const values = [
+                        args.genre_id,
+                        args.name
+                    ];
+                    await pool.query(query, values);
+                    return args;
+                }
+                catch (err) {
+                    console.error('Error inserting genre:', err);
+                    throw new Error('Failed to insert genre');
+                }
+            }
+        },
+        addTag: {
+            type: TagType,
+            args: {
+                tag_id: { type: GraphQLInt },
+                name: { type: GraphQLString }   
+            },
+            async resolve(parent, args) {
+                try {
+                    const query = `
+                        INSERT INTO public.tags (tag_id, name)
+                        VALUES ($1, $2)
+                        ON CONFLICT (tag_id) DO NOTHING;
+                    `;
+
+                    const values = [
+                        args.tag_id,
+                        args.name
+                    ];
+                    await pool.query(query, values);
+                    return args;
+                }
+                catch (err) {
+                    console.error('Error inserting tag:', err);
+                    throw new Error('Failed to insert tag');
                 }
             }
         }

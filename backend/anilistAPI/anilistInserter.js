@@ -23,7 +23,8 @@ async function insertAnimeData(animeList) {
                     producers: ${anime.producers ? `[${anime.producers.map(p => `"${p}"`).join(', ')}]` : null},
                     format: ${anime.format ? `"${anime.format}"` : null},
                     source: ${anime.source ? `"${anime.source}"` : null}
-                ) {
+                ) 
+                {
                     anime_id
                     romaji_name
                 }
@@ -37,4 +38,48 @@ async function insertAnimeData(animeList) {
     }
 }
 
-module.exports = { insertAnimeData };
+async function insertGenreData(genreList) {
+    for (const genre of genreList) {
+        const mutation = `
+            mutation {
+                addGenre(
+                    genre_id: ${genre.genre_id},
+                    name: "${genre.name}"
+                )
+                {
+                    genre_id
+                    name
+                }
+            }
+        `;
+
+        const result = await graphql({ schema, source: mutation });
+        if (result.errors) {
+            console.error(`Error inserting ${genre} via GraphQL:`, result.errors);
+        }
+    }
+}
+
+async function insertTagData(tagList) {
+    for (const tag of tagList) {
+        const mutation = `
+            mutation {
+                addTag(
+                    tag_id: ${tag.tag_id},
+                    name: "${tag.name}"
+                )
+                {
+                    tag_id
+                    name
+                }
+            }
+        `;
+
+        const result = await graphql({ schema, source: mutation });
+        if (result.errors) {
+            console.error(`Error inserting ${tag} via GraphQL:`, result.errors);
+        }
+    }
+}
+
+module.exports = { insertAnimeData, insertGenreData, insertTagData };

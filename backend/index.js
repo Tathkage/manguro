@@ -1,27 +1,54 @@
 const express = require('express');
+const session = require('express-session');
 const { createHandler } = require('graphql-http/lib/use/express');
 const { getAuthUrl, exchangeCodeForToken } = require('./anilistAPI/anilistAuth');
-const { getAllAnimeByPage } = require('./anilistAPI/anilistService');
+const { getAllAnimeByPage, getAllGenres, getAllTags } = require('./anilistAPI/anilistService');
 const schema = require('./schema/schema');
 const { graphql } = require('graphql');
 require('dotenv').config();
 
 const app = express();
 
+app.use(session({
+    secret: 'tempSecretKey',
+    resave: false,
+    saveUninitialized: true
+}));
+
 app.use('/graphql', createHandler({ schema }));
 
-app.get('/login', (req, res) => {
+app.get('/login', (req, res) => { //example login request: localhost:5000/login?type=anime
     const authUrl = getAuthUrl();
+    const type = req.query.type || null;
+    req.session.type = type;
     res.redirect(authUrl);  
 });
 
 app.get('/callback', async (req, res) => {
     const code = req.query.code;  
+    const type = req.session.type;
   
     try {
         const accessToken = await exchangeCodeForToken(code);
-        await getAllAnimeByPage(accessToken);
-        res.json({ success: true, message: 'All anime inserted successfully!' });
+
+        if (type === 'anime') {
+            // await getAllAnimeByPage(accessToken); //commented out to prevent accidently performing request
+            res.json({ success: true, message: 'All anime inserted successfully!' });
+        }
+        else if (type === 'genres') {
+            await getAllGenres(accessToken);
+            res.json({ success: true, message: 'All genres inserted successfully!' });
+        }
+        else if (type === 'tags') {
+            await getAllTags(accessToken);
+            res.json({ success: true, message: 'All tags inserted successfully!' });
+        }
+        else if (type === null) {
+            res.json({ success: false, message: 'No type provided.' });
+        }
+        else {
+            res.json({ success: false, message: 'Invalid type provided.' });
+        }
     } 
     catch (error) {
         console.error('Error exchanging authorization code for access token:', error);

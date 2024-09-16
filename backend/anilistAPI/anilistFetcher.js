@@ -80,4 +80,64 @@ async function fetchAnimeData(accessToken, page, perPage) {
     }
 }
 
-module.exports = { fetchAnimeData };
+async function fetchGenreData(accessToken) {
+    const query = `
+        query {
+            GenreCollection
+        }
+    `
+
+    try {
+        const response = await axios.post(
+            'https://graphql.anilist.co',
+            { 
+                query 
+            },
+            {
+                headers: {
+                    Authorization: `Bearer ${accessToken}`,
+                    'Content-Type': 'application/json',
+                    Accept: 'application/json',
+                },
+            }
+        )
+
+        return response.data.data.GenreCollection;
+    }
+    catch (error) {
+        throw new Error('Error fetching genre data from AniList');
+    }
+}
+
+async function fetchTagData(accessToken) {
+    const query = `
+        query {
+            MediaTagCollection {
+                name
+            }
+        }
+    `
+
+    try {
+        const response = await axios.post(
+            'https://graphql.anilist.co',
+            { 
+                query 
+            },
+            {
+                headers: {
+                    Authorization: `Bearer ${accessToken}`,
+                    'Content-Type': 'application/json',
+                    Accept: 'application/json',
+                },
+            }
+        )
+
+        return response.data.data.MediaTagCollection;
+    }
+    catch (error) {
+        throw new Error('Error fetching genre data from AniList');
+    }
+}
+
+module.exports = { fetchAnimeData, fetchGenreData, fetchTagData };
