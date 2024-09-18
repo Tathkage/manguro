@@ -61,4 +61,36 @@ function transformTagData(tagList) {
     });
 }
 
-module.exports = { transformAnimeData, transformGenreData, transformTagData }
+function transformAnimeGenreData(animeGenreList, genreMap) {
+    const animeGenreData = [];
+
+    animeGenreList.forEach(anime => {
+        anime.genres.forEach(genre => {
+            const genreId = genreMap[genre];
+            animeGenreData.push({
+                anime_id: anime.id,
+                genre_id: genreId
+            });
+        });
+    });
+
+    return animeGenreData;
+}
+
+function transformAnimeTagData(animeTagList, tagMap) {
+    const animeTagData = [];
+
+    animeTagList.forEach(anime => {
+        anime.tags.forEach(tag => {
+            const tagId = tagMap[tag.name];
+            animeTagData.push({
+                anime_id: anime.id,
+                tag_id: tagId
+            });
+        });
+    });
+
+    return animeTagData;
+}
+
+module.exports = { transformAnimeData, transformGenreData, transformTagData, transformAnimeGenreData, transformAnimeTagData };

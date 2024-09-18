@@ -82,4 +82,46 @@ async function insertTagData(tagList) {
     }
 }
 
-module.exports = { insertAnimeData, insertGenreData, insertTagData };
+async function insertAnimeGenreData(animeGenreList) {
+    for (const animeGenre of animeGenreList) {
+        const mutation = `
+            mutation {
+                addAnimeGenre(
+                    anime_id: ${animeGenre.anime_id},
+                    genre_id: ${animeGenre.genre_id}
+                )
+                {
+                    anime_genre_id
+                }
+            }
+        `;
+
+        const result = await graphql({ schema, source: mutation });
+        if (result.errors) {
+            console.error(`Error inserting ${animeGenre} via GraphQL:`, result.errors);
+        }
+    }
+}
+
+async function insertAnimeTagData(animeTagList) {
+    for (const animeTag of animeTagList) {
+        const mutation = `
+            mutation {
+                addAnimeTag(
+                    anime_id: ${animeTag.anime_id},
+                    tag_id: ${animeTag.tag_id}
+                )
+                {
+                    anime_tag_id
+                }
+            }
+        `;
+
+        const result = await graphql({ schema, source: mutation });
+        if (result.errors) {
+            console.error(`Error inserting ${animeTag} via GraphQL:`, result.errors);
+        }
+    }
+}
+
+module.exports = { insertAnimeData, insertGenreData, insertTagData, insertAnimeGenreData, insertAnimeTagData };

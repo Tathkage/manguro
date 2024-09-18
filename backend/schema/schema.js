@@ -40,6 +40,24 @@ const TagType = new GraphQLObjectType({
     })
 });
 
+const AnimeGenreType = new GraphQLObjectType({
+    name: 'AnimeGenre',
+    fields: () => ({
+        anime_genre_id: { type: GraphQLInt },
+        anime_id: { type: GraphQLInt },
+        genre_id: { type: GraphQLInt },
+    })
+});
+
+const AnimeTagType = new GraphQLObjectType({
+    name: 'AnimeTag',
+    fields: () => ({
+        anime_tag_id: { type: GraphQLInt },
+        anime_id: { type: GraphQLInt },
+        tag_id: { type: GraphQLInt },
+    })
+});
+
 const RootQuery = new GraphQLObjectType({
     name: 'RootQueryType',
     fields: {
@@ -55,7 +73,33 @@ const RootQuery = new GraphQLObjectType({
                     throw new Error('Error fetching anime data');
                 }
             }
-        }
+        },
+        genre: {
+            type: new GraphQLList(GenreType),
+            async resolve(parent, args) {
+                try {
+                    const result = await pool.query('SELECT * from public.genres');
+                    return result.rows;
+                }
+                catch (err) {
+                    console.error('Error fetching genre data:', err);
+                    throw new Error('Error featching genre data');
+                }
+            }
+        },
+        tag: {
+            type: new GraphQLList(TagType),
+            async resolve(parent, args) {
+                try {
+                    const result = await pool.query('SELECT * from public.tags');
+                    return result.rows;
+                }
+                catch (err) {
+                    console.error('Error fetching tag data:', err);
+                    throw new Error('Error featching tag data');
+                }
+            }
+        },
     }
 });
 
@@ -173,6 +217,62 @@ const Mutation = new GraphQLObjectType({
                 catch (err) {
                     console.error('Error inserting tag:', err);
                     throw new Error('Failed to insert tag');
+                }
+            }
+        },
+        addAnimeGenre: {
+            type: AnimeGenreType,
+            args: {
+                anime_id: { type: GraphQLInt },
+                genre_id: { type: GraphQLInt },
+            },
+            async resolve(parent, args) {
+                try {
+                    query = `
+                        INSERT INTO public.anime_genres (anime_id, genre_id)
+                        VALUES ($1, $2)
+                        ON CONFLICT (anime_id, genre_id) DO NOTHING
+                        RETURNING anime_genre_id;
+                    `;
+
+                    const values = [
+                        args.anime_id,
+                        args.genre_id
+                    ];
+                    const result = await pool.query(query, values);
+                    return result.rows[0];
+                }
+                catch (err) {
+                    console.error('Error inserting anime_genre:', err);
+                    throw new Error('Failed to insert anime_genre');
+                }
+            }
+        },
+        addAnimeTag: {
+            type: AnimeTagType,
+            args: {
+                anime_id: { type: GraphQLInt },
+                tag_id: { type: GraphQLInt },
+            },
+            async resolve(parent, args) {
+                try {
+                    query = `
+                        INSERT INTO public.anime_tags (anime_id, tag_id)
+                        VALUES ($1, $2)
+                        ON CONFLICT (anime_id, tag_id) DO NOTHING
+                        RETURNING anime_tag_id;
+                    `;
+
+                    const values = [
+                        args.anime_id,
+                        args.tag_id
+                    ];
+                    const result = await pool.query(query, values);
+                    return result.rows[0];
+                }
+                catch (err) {
+                    console.error('Error inserting anime_tag:', err);
+                    throw new Error('Failed to insert anime_tag');
                 }
             }
         }

@@ -42,6 +42,10 @@ async function fetchAnimeData(accessToken, page, perPage) {
                     }
                     format
                     source(version: 3)
+                    genres
+                    tags {
+                        name
+                    }
                 }
                 pageInfo {
                     hasNextPage
