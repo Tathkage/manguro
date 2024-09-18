@@ -40,28 +40,28 @@ export default function Home() {
       <section aria-labelledby="top-watchlists-heading">
         <h2 id="top-watchlists-heading" className="section-rectangle">Top Watchlists</h2>
         <p>Browse some of the most popular anime watchlists created by our community.</p>
-        <Carousel />
+        <Carousel type="watchlist" />
       </section>
 
       {/* ARIA Landmark: Recommended Watchlists */}
       <section aria-labelledby="recommended-watchlists-heading">
         <h2 id="recommended-watchlists-heading" className="section-rectangle">Recommended Watchlists</h2>
         <p>Discover personalized watchlists recommended just for you based on your preferences.</p>
-        <Carousel />
+        <Carousel type="watchlist" />
       </section>
 
       {/* ARIA Landmark: Top Anime */}
       <section aria-labelledby="top-anime-heading">
         <h2 id="top-anime-heading" className="section-rectangle">Top Anime</h2>
         <p>Explore the top trending anime of the season.</p>
-        <Carousel />
+        <Carousel type="anime" />
       </section>
 
       {/* ARIA Landmark: Recommended Anime */}
       <section aria-labelledby="recommended-anime-heading">
         <h2 id="recommended-anime-heading" className="section-rectangle">Recommended Anime</h2>
         <p>Check out personalized anime recommendations based on your watch history and interests.</p>
-        <Carousel />
+        <Carousel type="anime" />
       </section>
     </>
   );

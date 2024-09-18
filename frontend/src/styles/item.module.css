@@ -6,9 +6,9 @@
 }
   
 .rectangle {
-    width: 13vw;
+    width: 20vw;
     max-width: 150px;
-    height: calc(13vw * 220 / 150);
+    height: calc(20vw * 220 / 150);
     max-height: calc(150px * 220 / 150);
     background-color: #D9D9D9;
     border-radius: 5px;
@@ -23,4 +23,15 @@
     color: #000;
     text-align: center;
     margin-top: 10px;
+}
+
+.itemLink {
+    text-decoration: none; /* Remove underline from the link */
+    color: inherit; /* Inherit text color to maintain the design */
+    display: block; /* Make the link fill the entire item area */
+}
+
+.itemLink:hover .rectangle {
+    /* Optional: Add hover effects if desired */
+    background-color: #c0c0c0;
 }

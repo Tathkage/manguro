@@ -1,55 +1,63 @@
 .carouselContainer {
-    position: relative;
-    display: flex;
-    align-items: center;
-    overflow: hidden; /* Hide overflow to ensure a clean layout */
-  }
+  position: relative;
+  display: flex;
+  align-items: center;
+  overflow: hidden;
+}
   
-  .carousel {
-    display: flex;
-    flex-direction: row;
-    overflow-x: auto;
-    gap: 16px;
-    scroll-snap-type: x mandatory;
-    scroll-behavior: smooth;
-    white-space: nowrap;
-    -ms-overflow-style: none; /* Hide scrollbar for IE and Edge */
-    scrollbar-width: none; /* Hide scrollbar for Firefox */
-  }
+.carousel {
+  display: flex;
+  flex-direction: row;
+  overflow-x: auto;
+  gap: 16px;
+  scroll-snap-type: x mandatory;
+  scroll-behavior: smooth;
+  white-space: nowrap;
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
   
-  .carousel::-webkit-scrollbar {
-    display: none; /* Hide scrollbar for Chrome, Safari, etc. */
-  }
+.carousel::-webkit-scrollbar {
+  display: none;
+}
   
-  .item {
-    scroll-snap-align: start;
-    flex-shrink: 0;
-  }
+.item {
+  scroll-snap-align: start;
+  flex-shrink: 0;
+}
   
-  .leftArrow,
-  .rightArrow {
-    position: absolute;
-    top: 40%;
-    transform: translateY(-50%);
-    background-color: rgba(0, 0, 0, 0.5);
-    color: white;
-    border: none;
-    padding: 10px;
-    cursor: pointer;
-    z-index: 1;
-  }
+.leftArrow,
+.rightArrow {
+  background-color: rgba(0, 0, 0, 0.5);
+  color: white;
+  border: none;
+  padding: 10px;
+  cursor: pointer;
+  z-index: 1;
+  border-radius: 50%;
+  transition: background-color 0.3s;
+}
   
-  .leftArrow {
-    left: 0;
-  }
-  
-  .rightArrow {
-    right: 0;
-  }
-  
-  .leftArrow:disabled,
-  .rightArrow:disabled {
-    opacity: 0.5;
-    cursor: not-allowed;
-  }
-  
+.leftArrow {
+  left: 0;
+}
+
+.rightArrow {
+  right: 0;
+}
+
+.leftArrow:disabled,
+.rightArrow:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.leftArrow:hover,
+.rightArrow:hover {
+  background-color: rgba(0, 0, 0, 0.7);
+}
+
+.leftArrow:focus,
+.rightArrow:focus {
+  outline: 2px solid #fff;
+}
