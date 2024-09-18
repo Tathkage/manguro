@@ -1,6 +1,6 @@
 import Image from 'next/image';
 import FWelcomeAvatar from '../../public/images/feminine-welcome-avatar.png';
-import FWelcomeAvatar2 from '../../public/images/feminine-welcome-avatar-2.png';
+import MWelcomeAvatar from '../../public/images/masculine-welcome-avatar.png';
 import Carousel from '../components/carousel';
 import styles from '../styles/home.module.css';
 
@@ -9,10 +9,10 @@ export default function Home() {
     <>
       {/* ARIA Landmark: Welcome Section */}
       <section className={styles['welcome-section']} aria-labelledby="welcome-heading">
-      <div className={`${styles['welcome-image']} ${styles['masculine-avatar']}`}>
+        <div className={`${styles['welcome-image']} ${styles['masculine-avatar']}`}>
           <Image
-            src={FWelcomeAvatar2}
-            alt="Illustration of the manguro mascot character welcoming users to Manguro"
+            src={MWelcomeAvatar}
+            alt="Illustration of the masculine manguro mascot character welcoming users to Manguro."
             width={212}
             height={360}
             priority={true} /* Prioritize image loading for better UX */
@@ -28,7 +28,7 @@ export default function Home() {
         <div className={`${styles['welcome-image']} ${styles['feminine-avatar']}`}>
           <Image
             src={FWelcomeAvatar}
-            alt="Illustration of the manguro mascot character welcoming users to Manguro"
+            alt="Illustration of the feminine manguro mascot character welcoming users to Manguro."
             width={212}
             height={360}
             priority={true} /* Prioritize image loading for better UX */

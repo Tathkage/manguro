@@ -1,99 +1,117 @@
-"use client"; // Ensures this component is a client-side component
+'use client'; // Ensures this component is a client-side component
 
-import React, { useEffect, useRef, useState } from 'react';
-import Item from './item'; // Import the updated Item component
+import React, { useRef, useState, KeyboardEvent, useEffect } from 'react';
+import Item from './item'; // Ensure correct path
 import styles from '../styles/carousel.module.css';
 
 interface CarouselProps {
-    type: 'anime' | 'watchlist'; // New prop to specify the carousel type
+  type: 'anime' | 'watchlist'; // Prop to specify the carousel type
 }
 
 export default function Carousel({ type }: CarouselProps) {
-    const carouselRef = useRef<HTMLDivElement>(null);
-    const [canScrollLeft, setCanScrollLeft] = useState(false);
+  const carouselRef = useRef<HTMLDivElement>(null);
+  const [canScrollLeft, setCanScrollLeft] = useState(false);
+  const [canScrollRight, setCanScrollRight] = useState(true);
 
-    // Determine the link based on the carousel type
-    const link = type === 'anime' ? '/anime' : '/watchlist';
+  // Determine the base link based on the carousel type
+  const baseLink = type === 'anime' ? '/specific-anime' : '/specific-watchlist';
 
-    useEffect(() => {
-        const carousel = carouselRef.current;
-        if (!carousel) return;
+  // Handle scroll events to manage arrow button visibility
+  const handleScroll = () => {
+    const carousel = carouselRef.current;
+    if (!carousel) return;
 
-        const numItems = 10;
-        const itemWidth = carousel.firstElementChild?.clientWidth || 0;
-        const scrollThreshold = itemWidth * numItems;
+    const { scrollLeft, scrollWidth, clientWidth } = carousel;
 
-        // Clone items to create infinite scroll effect
-        const cloneItems = () => {
-            const clonedItems = Array.from(carousel.children).slice(0, numItems); // Convert HTMLCollection to array
-            clonedItems.forEach((item) => {
-                carousel.appendChild(item.cloneNode(true));
-            });
-        };
-        cloneItems();
+    setCanScrollLeft(scrollLeft > 0);
+    setCanScrollRight(scrollLeft + clientWidth < scrollWidth);
+  };
 
-        const handleScroll = () => {
-            // Infinite scrolling logic
-            if (carousel.scrollLeft >= carousel.scrollWidth - carousel.clientWidth) {
-                carousel.scrollLeft = 0;
-            }
+  // Scroll right
+  const scrollRight = () => {
+    const carousel = carouselRef.current;
+    if (carousel) {
+      carousel.scrollBy({
+        left: carousel.clientWidth,
+        behavior: 'smooth',
+      });
+    }
+  };
 
-            // Determine if left arrow should be shown
-            setCanScrollLeft(carousel.scrollLeft > 0);
-        };
+  // Scroll left
+  const scrollLeft = () => {
+    const carousel = carouselRef.current;
+    if (carousel) {
+      carousel.scrollBy({
+        left: -carousel.clientWidth,
+        behavior: 'smooth',
+      });
+    }
+  };
 
-        // Initial scroll to the beginning
-        carousel.scrollLeft = 0;
-        carousel.addEventListener('scroll', handleScroll);
+  // Handle key presses for navigation
+  const handleKeyDown = (e: KeyboardEvent<HTMLDivElement>) => {
+    if (e.key === 'ArrowRight') {
+      scrollRight();
+    } else if (e.key === 'ArrowLeft') {
+      scrollLeft();
+    }
+  };
 
-        return () => {
-            carousel.removeEventListener('scroll', handleScroll);
-        };
-    }, []);
+  // Generate 10 items with unique links
+  const renderItems = () => {
+    const items = [];
+    for (let i = 1; i <= 10; i++) {
+      items.push(
+        <Item
+          key={i}
+          name={`${type === 'anime' ? 'Anime' : 'Watchlist'} ${i}`}
+          link={`${baseLink}/${i}`} // Dynamic link per item (e.g., /specific-anime/3)
+        />
+      );
+    }
+    return items;
+  };
 
-    // Scroll right (e.g., when the right arrow is clicked)
-    const scrollRight = () => {
-        const carousel = carouselRef.current;
-        if (carousel) {
-            carousel.scrollBy({
-                left: carousel.firstElementChild?.clientWidth || 0,
-                behavior: 'smooth',
-            });
-        }
-    };
+  // Initial check to set button visibility
+  useEffect(() => {
+    handleScroll(); // Set initial button states
+  }, []);
 
-    // Scroll left (e.g., when the left arrow is clicked)
-    const scrollLeft = () => {
-        const carousel = carouselRef.current;
-        if (carousel) {
-            carousel.scrollBy({
-                left: -(carousel.firstElementChild?.clientWidth || 0),
-                behavior: 'smooth',
-            });
-        }
-    };
-
-    const renderItems = () => {
-        const items = [];
-        for (let i = 1; i <= 10; i++) {
-            items.push(<Item key={i} name={`Name ${i}`} link={link} />);
-        }
-        return items;
-    };
-
-    return (
-        <div className={styles.carouselContainer}>
-            {canScrollLeft && (
-                <button className={styles.leftArrow} onClick={scrollLeft} aria-label="Scroll Left">
-                    &#9664; {/* Left arrow symbol */}
-                </button>
-            )}
-            <div ref={carouselRef} className={styles.carousel}>
-                {renderItems()}
-            </div>
-            <button className={styles.rightArrow} onClick={scrollRight} aria-label="Scroll Right">
-                &#9654; {/* Right arrow symbol */}
-            </button>
-        </div>
-    );
+  return (
+    <div
+      className={styles.carouselContainer}
+      aria-label={`${type === 'anime' ? 'Anime' : 'Watchlist'} Carousel`}
+    >
+      {canScrollLeft && (
+        <button
+          className={styles.leftArrow}
+          onClick={scrollLeft}
+          aria-label="Scroll Left"
+        >
+          &#9664; {/* Left arrow symbol */}
+        </button>
+      )}
+      <div
+        ref={carouselRef}
+        className={styles.carousel}
+        onScroll={handleScroll}
+        onKeyDown={handleKeyDown}
+        role="region"
+        aria-live="polite"
+        tabIndex={0} // Make the carousel focusable
+      >
+        {renderItems()}
+      </div>
+      {canScrollRight && (
+        <button
+          className={styles.rightArrow}
+          onClick={scrollRight}
+          aria-label="Scroll Right"
+        >
+          &#9654; {/* Right arrow symbol */}
+        </button>
+      )}
+    </div>
+  );
 }

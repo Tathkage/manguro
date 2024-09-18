@@ -90,7 +90,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
                   </Link>
                 </li>
                 <li>
-                  <Link href="/watchlists" onClick={toggleMenu} aria-label="Watchlists">
+                  <Link href="/user-watchlists" onClick={toggleMenu} aria-label="Watchlists">
                     {isClient && <WatchlistsIcon aria-hidden="true" />}
                     <span>Watchlists</span>
                   </Link>

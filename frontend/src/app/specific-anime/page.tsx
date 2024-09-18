@@ -2,7 +2,7 @@
 
 // import styles from '../../styles/watchlists.module.css';
 
-export default function Search() {
+export default function SpecificAnime() {
   return (
     <>
       <section>

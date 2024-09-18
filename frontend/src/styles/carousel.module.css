@@ -4,52 +4,42 @@
   align-items: center;
   overflow: hidden;
 }
-  
+
 .carousel {
   display: flex;
   flex-direction: row;
   overflow-x: auto;
-  gap: 16px;
+  gap: 16px; /* Ensure gap between items */
   scroll-snap-type: x mandatory;
   scroll-behavior: smooth;
-  white-space: nowrap;
-  -ms-overflow-style: none;
-  scrollbar-width: none;
+  -ms-overflow-style: none; /* Hide scrollbar for IE and Edge */
+  scrollbar-width: none; /* Hide scrollbar for Firefox */
+  list-style: none; /* Remove bullet points if any */
 }
-  
+
 .carousel::-webkit-scrollbar {
-  display: none;
+  display: none; /* Hide scrollbar for Chrome, Safari, etc. */
 }
-  
+
 .item {
   scroll-snap-align: start;
   flex-shrink: 0;
+  list-style: none; /* Ensure no bullet points */
 }
-  
+
 .leftArrow,
 .rightArrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
   background-color: rgba(0, 0, 0, 0.5);
   color: white;
   border: none;
   padding: 10px;
   cursor: pointer;
   z-index: 1;
-  border-radius: 50%;
+  border-radius: 50%; /* Optional: Make arrows circular */
   transition: background-color 0.3s;
-}
-  
-.leftArrow {
-  left: 0;
-}
-
-.rightArrow {
-  right: 0;
-}
-
-.leftArrow:disabled,
-.rightArrow:disabled {
-  opacity: 0.5;
-  cursor: not-allowed;
 }
 
 .leftArrow:hover,
@@ -60,4 +50,18 @@
 .leftArrow:focus,
 .rightArrow:focus {
   outline: 2px solid #fff;
+}
+
+.leftArrow {
+  left: 10px;
+}
+
+.rightArrow {
+  right: 10px;
+}
+
+.leftArrow:disabled,
+.rightArrow:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
 }

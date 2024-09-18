@@ -2,11 +2,11 @@
 
 import styles from '../../styles/watchlists.module.css';
 
-export default function Search() {
+export default function UserWatchlists() {
   return (
     <>
       <section>
-        <h1>Watchlist Information</h1>
+        <h1>User's Watchlists</h1>
         <p>Content for section</p>
       </section>
     </>
