@@ -23,7 +23,8 @@ async function insertAnimeData(animeList) {
                     producers: ${anime.producers ? `[${anime.producers.map(p => `"${p}"`).join(', ')}]` : null},
                     format: ${anime.format ? `"${anime.format}"` : null},
                     source: ${anime.source ? `"${anime.source}"` : null}
-                ) {
+                ) 
+                {
                     anime_id
                     romaji_name
                 }
@@ -37,4 +38,90 @@ async function insertAnimeData(animeList) {
     }
 }
 
-module.exports = { insertAnimeData };
+async function insertGenreData(genreList) {
+    for (const genre of genreList) {
+        const mutation = `
+            mutation {
+                addGenre(
+                    genre_id: ${genre.genre_id},
+                    name: "${genre.name}"
+                )
+                {
+                    genre_id
+                    name
+                }
+            }
+        `;
+
+        const result = await graphql({ schema, source: mutation });
+        if (result.errors) {
+            console.error(`Error inserting ${genre} via GraphQL:`, result.errors);
+        }
+    }
+}
+
+async function insertTagData(tagList) {
+    for (const tag of tagList) {
+        const mutation = `
+            mutation {
+                addTag(
+                    tag_id: ${tag.tag_id},
+                    name: "${tag.name}"
+                )
+                {
+                    tag_id
+                    name
+                }
+            }
+        `;
+
+        const result = await graphql({ schema, source: mutation });
+        if (result.errors) {
+            console.error(`Error inserting ${tag} via GraphQL:`, result.errors);
+        }
+    }
+}
+
+async function insertAnimeGenreData(animeGenreList) {
+    for (const animeGenre of animeGenreList) {
+        const mutation = `
+            mutation {
+                addAnimeGenre(
+                    anime_id: ${animeGenre.anime_id},
+                    genre_id: ${animeGenre.genre_id}
+                )
+                {
+                    anime_genre_id
+                }
+            }
+        `;
+
+        const result = await graphql({ schema, source: mutation });
+        if (result.errors) {
+            console.error(`Error inserting ${animeGenre} via GraphQL:`, result.errors);
+        }
+    }
+}
+
+async function insertAnimeTagData(animeTagList) {
+    for (const animeTag of animeTagList) {
+        const mutation = `
+            mutation {
+                addAnimeTag(
+                    anime_id: ${animeTag.anime_id},
+                    tag_id: ${animeTag.tag_id}
+                )
+                {
+                    anime_tag_id
+                }
+            }
+        `;
+
+        const result = await graphql({ schema, source: mutation });
+        if (result.errors) {
+            console.error(`Error inserting ${animeTag} via GraphQL:`, result.errors);
+        }
+    }
+}
+
+module.exports = { insertAnimeData, insertGenreData, insertTagData, insertAnimeGenreData, insertAnimeTagData };
