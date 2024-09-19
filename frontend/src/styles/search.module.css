@@ -5,19 +5,24 @@
 .searchHeader {
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
+  justify-content: center;
+  align-items: center;
+  margin-top: 40px;
   margin-bottom: 40px;
-  padding: var(--main-padding);
 }
 
 /* Header Top: h1 and Switch Icon */
 .headerTop {
   display: flex;
   flex-direction: row;
+  justify-content: flex-start;
   align-items: center;
   width: 100%;
-  justify-content: flex-start;
   margin-bottom: 20px;
+}
+
+.headerTop h1 {
+  width: min-content;
 }
 
 /* Header Bottom: Search Bar and Manage Search */
@@ -32,7 +37,7 @@
 
 /* Search Title */
 .searchTitle {
-  font-size: 2rem;
+  font-size: 1.8rem;
   margin: 0;
 }
 
@@ -169,22 +174,30 @@
   border-radius: 5px;
 }
 
+@media (min-width: 380px) {
+  .headerTop {
+    justify-content: center;
+    width: 100%;
+  }
+
+  .headerTop h1 {
+    width: auto;
+  }
+}
+
 /* Responsive Styles */
 @media (min-width: 700px) {
   .searchHeader {
     flex-direction: column;
-    align-items: flex-start;
     padding: var(--main-padding);
   }
 
   .headerTop {
     width: 100%;
-    justify-content: flex-start;
   }
 
   .headerBottom {
     width: 80%;
-    justify-content: flex-start;
   }
 
   .switchSearchIcon {
