@@ -59,6 +59,28 @@
     display: none;
 }
 
+.carouselSection {
+    overflow: hidden; /* Hide overflow content */
+    padding: 16px;
+}
+  
+.carousel {
+    display: flex;
+    flex-direction: row; /* Horizontal alignment of items */
+    overflow-x: auto; /* Horizontal scrolling */
+    scroll-snap-type: x mandatory; /* Snap scrolling */
+    gap: 16px; /* Space between items */
+    padding: 16px;
+}
+  
+.carousel::-webkit-scrollbar {
+    display: none; /* Hide the scrollbar */
+}
+  
+.item {
+    scroll-snap-align: start; /* Ensure each item snaps into place */
+}  
+
 @media (min-width: 700px) {
     .welcome-section {
         width: 100%;

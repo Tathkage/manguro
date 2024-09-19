@@ -21,17 +21,21 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   }, []);
 
   const toggleMenu = () => {
-    setMenuOpen(!menuOpen);
-    document.body.classList.toggle('menu-open', !menuOpen);
-    
-    // Focus management: return focus to the toggle button when closing the menu
-    if (!menuOpen) {
-      const menuButton = document.querySelector('.menu-button') as HTMLElement;
-      if (menuButton) {
-        menuButton.focus();
+    setMenuOpen((prev) => {
+      const newState = !prev;
+      document.body.classList.toggle('menu-open', newState);
+  
+      // Focus management: return focus to the toggle button when closing the menu
+      if (!newState) {
+        const menuButton = document.querySelector('.menu-button') as HTMLElement;
+        if (menuButton) {
+          menuButton.focus();
+        }
       }
-    }
-  };
+  
+      return newState;
+    });
+  };  
 
   return (
     <html lang="en">
@@ -90,7 +94,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
                   </Link>
                 </li>
                 <li>
-                  <Link href="/watchlists" onClick={toggleMenu} aria-label="Watchlists">
+                  <Link href="/user-watchlists" onClick={toggleMenu} aria-label="Watchlists">
                     {isClient && <WatchlistsIcon aria-hidden="true" />}
                     <span>Watchlists</span>
                   </Link>

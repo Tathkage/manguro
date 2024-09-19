@@ -1,0 +1,38 @@
+.item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .rectangle {
+    width: 20vw;
+    max-width: 150px;
+    height: calc(20vw * 220 / 150);
+    max-height: calc(150px * 220 / 150);
+    background-color: #d9d9d9;
+    border-radius: 5px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: background-color 0.3s;
+  }
+  
+  .text {
+    font-size: 16px;
+    color: #000;
+    text-align: center;
+    margin-top: 10px;
+  }
+  
+  .itemLink {
+    text-decoration: none; /* Remove underline from the link */
+    color: inherit; /* Inherit text color to maintain the design */
+    display: block; /* Make the link fill the entire item area */
+  }
+  
+  .itemLink:hover .rectangle {
+    /* Optional: Add hover effects if desired */
+    background-color: #c0c0c0;
+  }
+  
