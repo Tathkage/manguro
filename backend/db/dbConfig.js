@@ -12,7 +12,10 @@ const formatMap = {
     SPECIAL: 'Special',
     OVA: 'OVA',
     ONA: 'ONA',
-    MUSIC: 'Music'
+    MUSIC: 'Music',
+    MANGA: 'Manga',
+    NOVEL: 'Novel',
+    ONE_SHOT: 'One Shot'
 };
 
 const sourceMap = {

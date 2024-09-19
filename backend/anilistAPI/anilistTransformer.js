@@ -39,6 +39,32 @@ function transformAnimeData(animeList) {
     });
 }
 
+function transformMangaData(mangaList) {
+    return mangaList.map(manga => {
+        manga.format = formatMap[manga.format] || manga.format;
+        manga.source = sourceMap[manga.source] || manga.source;
+
+        return {
+            manga_id: manga.id,
+            romaji_name: manga.title.romaji ? cleanString(manga.title.romaji) : null,
+            english_name: manga.title.english ? cleanString(manga.title.english) : null,
+            native_name: manga.title.native ? cleanString(manga.title.native) : null,
+            description: manga.description ? cleanString(manga.description) : null,
+            cover_image: manga.coverImage && manga.coverImage.extraLarge ? manga.coverImage.extraLarge : null,
+            chapter_count: manga.chapters || null,
+            volume_count: manga.volumes || null,
+            start_date: manga.startDate && manga.startDate.year && manga.startDate.month && manga.startDate.day 
+                ? `${manga.startDate.year}-${manga.startDate.month}-${manga.startDate.day}` 
+                : null,
+            end_date: manga.endDate && manga.endDate.year && manga.endDate.month && manga.endDate.day 
+                ? `${manga.endDate.year}-${manga.endDate.month}-${manga.endDate.day}` 
+                : null,
+            format: manga.format || null,
+            source: manga.source || null
+        };
+    });
+}
+
 function transformGenreData(genreList) {
     let nextId = 1;
 
@@ -93,4 +119,11 @@ function transformAnimeTagData(animeTagList, tagMap) {
     return animeTagData;
 }
 
-module.exports = { transformAnimeData, transformGenreData, transformTagData, transformAnimeGenreData, transformAnimeTagData };
+module.exports = { 
+    transformAnimeData, 
+    transformMangaData,
+    transformGenreData, 
+    transformTagData, 
+    transformAnimeGenreData, 
+    transformAnimeTagData 
+};
