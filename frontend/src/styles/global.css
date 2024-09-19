@@ -2,7 +2,7 @@
 
 /* Body Styling */
 body {
-    background-color: #FFF2F8;
+    background-color: #FFF8FB;
     font-family: Arial, sans-serif;
     color: #212121;
     padding: 0;
@@ -12,12 +12,18 @@ body {
 
 /* Header Styling */
 header {
+    position: relative;
     background-color: #EAC4CF;
     color: #212121;
     padding: 20px;
     display: flex;
     justify-content: space-between;
     align-items: center;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+header a {
+    text-decoration: none;
 }
 
 header h3 {
@@ -120,16 +126,15 @@ body.menu-open header {
 }
 
 .menu-overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
+    position: absolute;
+    top: 130%;
+    right: 20px;
+    width: auto;
+    height: auto;
     background-color: rgba(255, 255, 255, 0);
     display: flex;
-    justify-content: center;
+    justify-content: flex-end;
     align-items: flex-start;
-    padding-top: 25vw;
     z-index: 999;
 }
 
@@ -220,6 +225,27 @@ body.menu-open header {
     height: auto;
     max-width: 48px;
     min-width: 24px;
+}
+
+/* Visually Hidden (for screen readers) */
+.visually-hidden {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap; /* added line */
+    border: 0;
+}
+
+/* Optional: Focus Styles for Keyboard Navigation */
+.menu-items a:focus,
+.menu-items button:focus,
+.menu-button:focus {
+    outline: 2px solid #EAC4CF;
+    outline-offset: 2px;
 }
 
 /* Main Section */
