@@ -24,6 +24,24 @@ const AnimeType = new GraphQLObjectType({
     })
 });
 
+const MangaType = new GraphQLObjectType({
+    name: 'Manga',
+    fields: () => ({
+        manga_id: { type: GraphQLInt },
+        romaji_name: { type: GraphQLString },
+        english_name: { type: GraphQLString },
+        native_name: { type: GraphQLString },
+        description: { type: GraphQLString },
+        cover_image: { type: GraphQLString },
+        chapter_count: { type: GraphQLInt },
+        volume_count: { type: GraphQLInt },
+        start_date: { type: GraphQLString },
+        end_date: { type: GraphQLString },
+        format: { type: GraphQLString },
+        source: { type: GraphQLString },
+    })
+});
+
 const GenreType = new GraphQLObjectType({
     name: 'Genre',
     fields: () => ({
@@ -49,11 +67,29 @@ const AnimeGenreType = new GraphQLObjectType({
     })
 });
 
+const MangaGenreType = new GraphQLObjectType({
+    name: 'MangaGenre',
+    fields: () => ({
+        manga_genre_id: { type: GraphQLInt },
+        manga_id: { type: GraphQLInt },
+        genre_id: { type: GraphQLInt },
+    })
+});
+
 const AnimeTagType = new GraphQLObjectType({
     name: 'AnimeTag',
     fields: () => ({
         anime_tag_id: { type: GraphQLInt },
         anime_id: { type: GraphQLInt },
+        tag_id: { type: GraphQLInt },
+    })
+});
+
+const MangaTagType = new GraphQLObjectType({
+    name: 'MangaTag',
+    fields: () => ({
+        manga_tag_id: { type: GraphQLInt },
+        manga_id: { type: GraphQLInt },
         tag_id: { type: GraphQLInt },
     })
 });
@@ -132,7 +168,7 @@ const Mutation = new GraphQLObjectType({
                     const query = `
                         INSERT INTO public.anime 
                             (anime_id, romaji_name, english_name, native_name, description, cover_image, trailer_url, episode_duration, 
-                            episode_count, start_date, end_date, year, season, animation_studio, producers,format, source)
+                            episode_count, start_date, end_date, year, season, animation_studio, producers, format, source)
                         VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $17)
                         ON CONFLICT (anime_id) DO NOTHING;
                     `;
@@ -163,6 +199,56 @@ const Mutation = new GraphQLObjectType({
                 catch (err) {
                     console.error('Error inserting anime:', err);
                     throw new Error('Failed to insert anime');
+                }
+            }
+        },
+        addManga: {
+            type: MangaType,
+            args: {
+                manga_id: { type: GraphQLInt },
+                romaji_name: { type: GraphQLString },
+                english_name: { type: GraphQLString },
+                native_name: { type: GraphQLString },
+                description: { type: GraphQLString },
+                cover_image: { type: GraphQLString },
+                chapter_count: { type: GraphQLInt },
+                volume_count: { type: GraphQLInt },
+                start_date: { type: GraphQLString },
+                end_date: { type: GraphQLString },
+                format: { type: GraphQLString },
+                source: { type: GraphQLString },
+            },
+            async resolve(parent, args) {
+                try {
+                    const query = `
+                        INSERT INTO public.manga 
+                            (manga_id, romaji_name, english_name, native_name, description, cover_image, 
+                            chapter_count, volume_count, start_date, end_date, format, source)
+                        VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12)
+                        ON CONFLICT (manga_id) DO NOTHING;
+                    `;
+
+                    const values = [
+                        args.manga_id,
+                        args.romaji_name,
+                        args.english_name,
+                        args.native_name,
+                        args.description,
+                        args.cover_image,
+                        args.chapter_count,
+                        args.volume_count,
+                        args.start_date,
+                        args.end_date,
+                        args.format,
+                        args.source
+                    ];
+
+                    await pool.query(query, values);
+                    return args;
+                }
+                catch (err) {
+                    console.error('Error inserting manga:', err);
+                    throw new Error('Failed to insert manga');
                 }
             }
         },
@@ -248,6 +334,34 @@ const Mutation = new GraphQLObjectType({
                 }
             }
         },
+        addMangaGenre: {
+            type: MangaGenreType,
+            args: {
+                manga_id: { type: GraphQLInt },
+                genre_id: { type: GraphQLInt },
+            },
+            async resolve(parent, args) {
+                try {
+                    query = `
+                        INSERT INTO public.manga_genres (manga_id, genre_id)
+                        VALUES ($1, $2)
+                        ON CONFLICT (manga_id, genre_id) DO NOTHING
+                        RETURNING manga_genre_id;
+                    `;
+
+                    const values = [
+                        args.manga_id,
+                        args.genre_id
+                    ];
+                    const result = await pool.query(query, values);
+                    return result.rows[0];
+                }
+                catch (err) {
+                    console.error('Error inserting manga_genre:', err);
+                    throw new Error('Failed to insert manga_genre');
+                }
+            }
+        },
         addAnimeTag: {
             type: AnimeTagType,
             args: {
@@ -273,6 +387,34 @@ const Mutation = new GraphQLObjectType({
                 catch (err) {
                     console.error('Error inserting anime_tag:', err);
                     throw new Error('Failed to insert anime_tag');
+                }
+            }
+        },
+        addMangaTag: {
+            type: MangaTagType,
+            args: {
+                manga_id: { type: GraphQLInt },
+                tag_id: { type: GraphQLInt },
+            },
+            async resolve(parent, args) {
+                try {
+                    query = `
+                        INSERT INTO public.manga_tags (manga_id, tag_id)
+                        VALUES ($1, $2)
+                        ON CONFLICT (manga_id, tag_id) DO NOTHING
+                        RETURNING manga_tag_id;
+                    `;
+
+                    const values = [
+                        args.manga_id,
+                        args.tag_id
+                    ];
+                    const result = await pool.query(query, values);
+                    return result.rows[0];
+                }
+                catch (err) {
+                    console.error('Error inserting manga_tag:', err);
+                    throw new Error('Failed to insert manga_tag');
                 }
             }
         }
