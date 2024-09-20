@@ -12,7 +12,9 @@ const {
     getAllGenres, 
     getAllTags, 
     getAllAnimeGenres, 
-    getAllAnimeTags 
+    getAllMangaGenres,
+    getAllAnimeTags,
+    getAllMangaTags
 } = require('./anilistAPI/anilistService');
 
 const app = express();
@@ -86,6 +88,37 @@ app.get('/callback', async (req, res) => {
             await getAllAnimeGenres(accessToken, genreMap);
             res.json({ success: true, message: 'All anime_genres inserted successfully!' });
         }
+        else if (type === 'mangagenres') {
+            let result;
+            const query = `
+                query {
+                    genre {
+                        genre_id
+                        name
+                    }
+                }
+            `;
+
+            try {
+                result = await graphql({ schema, source: query });
+                if (result.errors) {
+                    console.error('Error fetching genre data via GraphQL:', result.errors);
+                    res.status(500).send('Error fetching genre data.');
+                }
+            }
+            catch (error) {
+                console.error('Error executing GraphQl query:', error);
+                res.status(500).send('Error executing GraphQl query.');
+            }
+
+            const genreMap = result.data.genre.reduce((map, genre) => {
+                map[genre.name] = genre.genre_id;
+                return map;
+            }, {})
+
+            await getAllMangaGenres(accessToken, genreMap);
+            res.json({ success: true, message: 'All manga_genres inserted successfully!' });
+        }
         else if (type === 'animetags') {
             let result;
             const query = `
@@ -116,6 +149,37 @@ app.get('/callback', async (req, res) => {
 
             await getAllAnimeTags(accessToken, tagMap);
             res.json({ success: true, message: 'All anime_tags inserted successfully!' });
+        }
+        else if (type === 'mangatags') {
+            let result;
+            const query = `
+                query {
+                    tag {
+                        tag_id
+                        name
+                    }
+                }
+            `;
+
+            try {
+                result = await graphql({ schema, source: query });
+                if (result.errors) {
+                    console.error('Error fetching tag data via GraphQL:', result.errors);
+                    res.status(500).send('Error fetching tag data.');
+                }
+            }
+            catch (error) {
+                console.error('Error executing GraphQl query:', error);
+                res.status(500).send('Error executing GraphQl query.');
+            }
+
+            const tagMap = result.data.tag.reduce((map, tag) => {
+                map[tag.name] = tag.tag_id;
+                return map;
+            }, {})
+
+            await getAllMangaTags(accessToken, tagMap);
+            res.json({ success: true, message: 'All manga_tags inserted successfully!' });
         }
         else if (type === null) {
             res.json({ success: false, message: 'No type provided.' });

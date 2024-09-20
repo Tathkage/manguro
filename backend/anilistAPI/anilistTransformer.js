@@ -103,6 +103,22 @@ function transformAnimeGenreData(animeGenreList, genreMap) {
     return animeGenreData;
 }
 
+function transformMangaGenreData(mangaGenreList, genreMap) {
+    const mangaGenreData = [];
+
+    mangaGenreList.forEach(manga => {
+        manga.genres.forEach(genre => {
+            const genreId = genreMap[genre];
+            mangaGenreData.push({
+                manga_id: manga.id,
+                genre_id: genreId
+            });
+        });
+    });
+
+    return mangaGenreData;
+}
+
 function transformAnimeTagData(animeTagList, tagMap) {
     const animeTagData = [];
 
@@ -119,11 +135,29 @@ function transformAnimeTagData(animeTagList, tagMap) {
     return animeTagData;
 }
 
+function transformMangaTagData(mangaTagList, tagMap) {
+    const mangaTagData = [];
+
+    mangaTagList.forEach(manga => {
+        manga.tags.forEach(tag => {
+            const tagId = tagMap[tag.name];
+            mangaTagData.push({
+                manga_id: manga.id,
+                tag_id: tagId
+            });
+        });
+    });
+
+    return mangaTagData;
+}
+
 module.exports = { 
     transformAnimeData, 
     transformMangaData,
     transformGenreData, 
     transformTagData, 
     transformAnimeGenreData, 
-    transformAnimeTagData 
+    transformMangaGenreData,
+    transformAnimeTagData,
+    transformMangaTagData
 };

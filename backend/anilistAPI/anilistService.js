@@ -1,11 +1,13 @@
 const { fetchAnimeData, fetchMangaData, fetchGenreData, fetchTagData } = require('./anilistFetcher');
 const { 
     transformAnimeData, 
+    transformMangaData,
     transformGenreData, 
     transformTagData, 
     transformAnimeGenreData, 
-    transformAnimeTagData, 
-    transformMangaData 
+    transformMangaGenreData,
+    transformAnimeTagData,
+    transformMangaTagData
 } = require('./anilistTransformer');
 const { 
     insertAnimeData, 
@@ -13,7 +15,9 @@ const {
     insertGenreData, 
     insertTagData, 
     insertAnimeGenreData, 
-    insertAnimeTagData 
+    insertMangaGenreData,
+    insertAnimeTagData,
+    insertMangaTagData
 } = require('./anilistInserter');
 
 async function getAllAnimeByPage(accessToken) {
@@ -52,7 +56,7 @@ async function getAllAnimeByPage(accessToken) {
 }
 
 async function getAllMangaByPage(accessToken) {
-    let page = 226; // can change page number for debugging
+    let page = 1476; // can change page number for debugging
     const perPage = 50;  
     const batchSize = 25;
     let hasNextPage = true;
@@ -147,6 +151,41 @@ async function getAllAnimeGenres(accessToken, genreMap) {
     }
 }
 
+async function getAllMangaGenres(accessToken, genreMap) {
+    let page = 1476; // can change page number for debugging
+    const perPage = 50;  
+    const batchSize = 25;
+    let hasNextPage = true;
+
+    try {
+        while (hasNextPage) {
+            let mangaGenreList = [];
+
+            for (let i = 0; i < batchSize && hasNextPage; i++) {
+                const { manga: fetchedManga, hasNextPage: nextPageExists, retry } = await fetchMangaData(accessToken, page, perPage);
+                if (retry) {
+                    i--;
+                    continue;
+                }
+                mangaGenreList = mangaGenreList.concat(fetchedManga)
+                hasNextPage = nextPageExists;
+                page++;
+            }
+
+            console.log(`Total number of manga fetched: ${mangaGenreList.length}`);
+
+            const transformedMangaGenreList = transformMangaGenreData(mangaGenreList, genreMap);
+            await insertMangaGenreData(transformedMangaGenreList);
+            console.log(`Inserted batch of 25 pages, currently at page: ${page - 1}`);
+        }
+        console.log('All manga_genres have been inserted into the database.');
+    }
+    catch (error) {
+        console.error('Error fetching manga_genre data:', error);
+        throw error;
+    }
+}
+
 async function getAllAnimeTags(accessToken, tagMap) {
     let page = 376; // can change page number for debugging
     const perPage = 50;  
@@ -182,11 +221,48 @@ async function getAllAnimeTags(accessToken, tagMap) {
     }
 }
 
+async function getAllMangaTags(accessToken, tagMap) {
+    let page = 1; // can change page number for debugging
+    const perPage = 50;  
+    const batchSize = 25;
+    let hasNextPage = true;
+
+    try {
+        while (hasNextPage) {
+            let mangaTagList = [];
+
+            for (let i = 0; i < batchSize && hasNextPage; i++) {
+                const { manga: fetchedManga, hasNextPage: nextPageExists, retry } = await fetchMangaData(accessToken, page, perPage);
+                if (retry) {
+                    i--;
+                    continue;
+                }
+                mangaTagList = mangaTagList.concat(fetchedManga);
+                hasNextPage = nextPageExists;
+                page++;
+            }
+            
+            console.log(`Total number of manga fetched: ${mangaTagList.length}`);
+
+            const transformedMangaTagData = transformMangaTagData(mangaTagList, tagMap);
+            await insertMangaTagData(transformedMangaTagData);
+            console.log(`Inserted batch of 25 pages, currently at page: ${page - 1}`);
+        }
+        console.log('All manga_tags have been inserted into the database.');
+    }
+    catch (error) {
+        console.error('Error fetching manga_tag data:', error);
+        throw error;
+    }
+}
+
 module.exports = { 
     getAllAnimeByPage, 
     getAllMangaByPage,
     getAllGenres, 
     getAllTags, 
     getAllAnimeGenres, 
-    getAllAnimeTags 
+    getAllMangaGenres,
+    getAllAnimeTags,
+    getAllMangaTags
 };

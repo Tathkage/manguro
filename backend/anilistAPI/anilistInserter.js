@@ -135,6 +135,27 @@ async function insertAnimeGenreData(animeGenreList) {
     }
 }
 
+async function insertMangaGenreData(mangaGenreList) {
+    for (const mangaGenre of mangaGenreList) {
+        const mutation = `
+            mutation {
+                addMangaGenre(
+                    manga_id: ${mangaGenre.manga_id},
+                    genre_id: ${mangaGenre.genre_id}
+                )
+                {
+                    manga_genre_id
+                }
+            }
+        `;
+
+        const result = await graphql({ schema, source: mutation });
+        if (result.errors) {
+            console.error(`Error inserting ${mangaGenre} via GraphQL:`, result.errors);
+        }
+    }
+}
+
 async function insertAnimeTagData(animeTagList) {
     for (const animeTag of animeTagList) {
         const mutation = `
@@ -156,11 +177,34 @@ async function insertAnimeTagData(animeTagList) {
     }
 }
 
+async function insertMangaTagData(mangaTagList) {
+    for (const mangaTag of mangaTagList) {
+        const mutation = `
+            mutation {
+                addMangaTag(
+                    manga_id: ${mangaTag.manga_id},
+                    tag_id: ${mangaTag.tag_id}
+                )
+                {
+                    manga_tag_id
+                }
+            }
+        `;
+
+        const result = await graphql({ schema, source: mutation });
+        if (result.errors) {
+            console.error(`Error inserting ${mangaTag} via GraphQL:`, result.errors);
+        }
+    }
+}
+
 module.exports = { 
     insertAnimeData, 
     insertMangaData,
     insertGenreData, 
     insertTagData, 
     insertAnimeGenreData, 
-    insertAnimeTagData 
+    insertMangaGenreData,
+    insertAnimeTagData,
+    insertMangaTagData
 };
