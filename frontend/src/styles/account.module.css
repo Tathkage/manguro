@@ -20,6 +20,38 @@
   line-height: 1.6;
 }
 
+/* New Styles for User Details */
+.userDetails {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 20px;
+}
+
+.profilePicture {
+  flex: 0 0 auto;
+}
+
+.profileImage {
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.profileBio {
+  background-color: #ffffff;
+  padding: 8px 16px;
+  border: 1px solid #e0e0e0;
+  border-radius: 4px;
+  max-width: 600px;
+  text-align: left;
+  font-size: clamp(1rem, 2vw, 1.25rem);
+  line-height: 1.6;
+}
+
+.profileBio p {
+  margin: 0;
+}
+
 /* Favorites Section */
 .favoritesSection {
   margin-bottom: 40px;
@@ -46,58 +78,63 @@
 /* Container for h3 and Add Button */
 .favoriteHeaderContainer {
     display: flex;
-    justify-content: center; /* Center the content horizontally */
-    align-items: center; /* Align items vertically */
-    gap: 10px; /* Space between h3 and button */
-    margin-bottom: 15px; /* Space below the header container */
+    justify-content: center;
+    align-items: stretch;
+    gap: 10px;
+    margin-top: 45px;
+    margin-bottom: 15px;
   }
   
 /* Favorite Headers */
 .favoriteHeader {
     background-color: #ffffff;
-    padding: 8px 16px;
+    padding: 4px 16px;
     border: 1px solid #e0e0e0;
     border-radius: 4px;
-    display: inline-block; /* Allows centering via parent’s text-align */
     font-size: 1.25rem;
     box-shadow: 0 0 5px rgba(0, 0, 0, 0.05);
-    max-width: 100%; /* Prevents overflow on smaller screens */
+    max-width: 100%;
+    margin: 0;
+    display: flex;
+    align-items: center;
 }
 
 /* Add Button */
 .addButton {
     border: 1px solid #e0e0e0;
-    cursor: pointer; /* Change cursor to pointer on hover */
-    display: flex; /* Use Flexbox for centering */
-    align-items: center; /* Vertically center the SVG */
-    justify-content: center; /* Horizontally center the SVG */
-    width: 32px; /* Set a fixed width */
-    height: 32px; /* Set a fixed height */
-    border-radius: 4px; /* Rounded corners */
-    transition: background-color 0.3s, transform 0.2s; /* Smooth transitions */
-    box-shadow: 0 0 5px rgba(0, 0, 0, 0.05); /* Subtle shadow for depth */
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    aspect-ratio: 1/1;
+    padding: 4px;
+    border-radius: 4px;
+    transition: background-color 0.3s, transform 0.2s;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.05);
     background-color: #ffffff;
+    min-width: 32px;
 }
 
 .addButton:hover {
-transform: scale(1.05); /* Slightly enlarge the button on hover */
+transform: scale(1.05);
 }
 
 .addButton:focus {
-outline: 2px solid #333; /* Visible outline on focus for accessibility */
+outline: 2px solid #333;
 outline-offset: 2px;
 }
 
 /* Ensure SVG Icons Fit Within the Button */
 .addButton svg {
-width: 20px; /* Adjust as needed */
-height: 20px; /* Adjust as needed */
-fill: #333; /* Set SVG color */
-transition: fill 0.3s; /* Smooth color transition */
+width: 20px;
+height: 20px;
+fill: #333;
+transition: fill 0.3s;
 }
 
 .addButton:hover svg {
-fill: #C4EEE4; /* Change SVG color on hover */
+fill: #C4EEE4;
 }
 
 /* Other Sections (Your Watchlists, Recently Watched) */

@@ -1,9 +1,11 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import Image from 'next/image';
 import styles from '../../styles/account.module.css';
-import Carousel from '../../components/carousel'; // Adjust the import path as necessary
-import AddIcon from '../../../public/icons/add-icon.svg'; // Import the AddIcon
+import Carousel from '../../components/carousel';
+import AddIcon from '../../../public/icons/add-icon.svg';
+import ProfilePicture from '../../../public/images/profile-picture-sub.png';
 
 export default function Account() {
   const [isClient, setIsClient] = useState(false);
@@ -16,12 +18,32 @@ export default function Account() {
     <main className={styles.main}>
       {/* User Information Section */}
       <section className={styles.userInfo} aria-labelledby="user-info-heading">
+        {/* Row 1: Username */}
         <h1 id="user-info-heading">Username</h1>
-        <p>
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras ut odio lorem.
-          Ut convallis fermentum nibh id laoreet. Maecenas euismod nec velit vitae congue.
-          Phasellus.
-        </p>
+
+        {/* Row 2: Profile Picture and Bio */}
+        <div className={styles.userDetails}>
+          {/* Profile Picture */}
+          <div className={styles.profilePicture}>
+            <Image
+              src={ProfilePicture}
+              alt="Default user profile picture: manguro's female mascot."
+              width={150}
+              height={150}
+              priority={true}
+              className={styles.profileImage}
+            />
+          </div>
+
+          {/* Profile Bio */}
+          <div className={styles.profileBio}>
+            <p>
+              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras ut odio lorem.
+              Ut convallis fermentum nibh id laoreet. Maecenas euismod nec velit vitae congue.
+              Phasellus.
+            </p>
+          </div>
+        </div>
       </section>
 
       {/* Your Favorites Section */}
@@ -35,7 +57,7 @@ export default function Account() {
             <button
               className={styles.addButton}
               aria-label="Add Favorite Anime"
-              onClick={() => handleAdd('anime')} // Placeholder handler
+              onClick={() => handleAdd('anime')}
             >
               {isClient && <AddIcon aria-hidden="true" />}
             </button>
@@ -50,7 +72,7 @@ export default function Account() {
             <button
               className={styles.addButton}
               aria-label="Add Favorite Manga"
-              onClick={() => handleAdd('manga')} // Placeholder handler
+              onClick={() => handleAdd('manga')}
             >
               {isClient && <AddIcon aria-hidden="true" />}
             </button>
@@ -65,7 +87,7 @@ export default function Account() {
             <button
               className={styles.addButton}
               aria-label="Add Favorite Characters"
-              onClick={() => handleAdd('character')} // Placeholder handler
+              onClick={() => handleAdd('character')}
             >
               {isClient && <AddIcon aria-hidden="true" />}
             </button>

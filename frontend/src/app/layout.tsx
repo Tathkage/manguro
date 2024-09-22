@@ -136,7 +136,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
               aria-modal="true"
               id="menu"
               aria-labelledby="menu-heading"
-              tabIndex={-1} // Make the overlay focusable
+              tabIndex={-1}
               ref={menuOverlayRef}
             >
               <div className="menu-content">

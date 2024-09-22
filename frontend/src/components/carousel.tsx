@@ -1,12 +1,11 @@
-// components/carousel.tsx
 'use client';
 
 import React, { useRef, useState, KeyboardEvent, useEffect } from 'react';
-import Item from './item'; // Ensure correct path
-import styles from '../styles/carousel.module.css'; // Adjust the path as necessary
+import Item from './item';
+import styles from '../styles/carousel.module.css';
 
 interface CarouselProps {
-  type: 'anime' | 'manga' | 'character' | 'watchlist' | 'recently-watched'; // Extended types
+  type: 'anime' | 'manga' | 'character' | 'watchlist' | 'recently-watched';
 }
 
 export default function Carousel({ type }: CarouselProps) {
@@ -94,7 +93,7 @@ export default function Carousel({ type }: CarouselProps) {
         <Item
           key={i}
           name={`${itemPrefix} ${i}`}
-          link={`${baseLink}/${i}`} // Dynamic link per item (e.g., /specific-anime/3)
+          link={`${baseLink}/${i}`}
         />
       );
     }
@@ -103,7 +102,7 @@ export default function Carousel({ type }: CarouselProps) {
 
   // Initial check to set button visibility
   useEffect(() => {
-    handleScroll(); // Set initial button states
+    handleScroll();
     // Add event listener for resize to handle dynamic content
     window.addEventListener('resize', handleScroll);
     return () => {
@@ -132,7 +131,7 @@ export default function Carousel({ type }: CarouselProps) {
         onKeyDown={handleKeyDown}
         role="region"
         aria-live="polite"
-        tabIndex={0} // Make the carousel focusable
+        tabIndex={0}
       >
         {renderItems()}
       </div>

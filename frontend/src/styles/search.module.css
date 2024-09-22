@@ -32,7 +32,6 @@
   align-items: center;
   gap: 16px;
   width: 100%;
-  /* max-width: 800px; */
 }
 
 /* Search Title */
@@ -103,14 +102,14 @@
   outline: none;
   margin-left: 8px;
   font-size: 1rem;
-  color: #212121; /* Changed to #212121 for input text */
+  color: #212121;
   width: 100%;
 }
 
 /* Placeholder Text Color */
 .searchInput::placeholder {
   color: #EBD6DE;
-  opacity: 1; /* Ensures full opacity */
+  opacity: 1;
 }
 
 /* Optional: Vendor Prefixes for Placeholder */

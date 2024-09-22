@@ -15,7 +15,7 @@ export default function Home() {
             alt="Illustration of the masculine manguro mascot character welcoming users to Manguro."
             width={212}
             height={360}
-            priority={true} /* Prioritize image loading for better UX */
+            priority={true}
           />
         </div>
         <div className={styles['welcome-text']}>
@@ -31,7 +31,7 @@ export default function Home() {
             alt="Illustration of the feminine manguro mascot character welcoming users to Manguro."
             width={212}
             height={360}
-            priority={true} /* Prioritize image loading for better UX */
+            priority={true}
           />
         </div>
       </section>

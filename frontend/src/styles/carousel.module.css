@@ -5,32 +5,32 @@
   display: flex;
   align-items: center;
   overflow: hidden;
-  margin-bottom: 20px; /* Spacing between carousels */
+  margin-bottom: 20px;
 }
 
 .carousel {
   display: flex;
   flex-direction: row;
   overflow-x: auto;
-  gap: 1vw; /* Gap between items */
+  gap: 1vw;
   scroll-snap-type: x mandatory;
   scroll-behavior: smooth;
-  -ms-overflow-style: none; /* Hide scrollbar for IE and Edge */
-  scrollbar-width: none; /* Hide scrollbar for Firefox */
+  -ms-overflow-style: none;
+  scrollbar-width: none;
 }
 
 .carousel::-webkit-scrollbar {
-  display: none; /* Hide scrollbar for Chrome, Safari, etc. */
+  display: none;
 }
 
 .item {
   scroll-snap-align: start;
   flex-shrink: 0;
-  list-style: none; /* Ensure no bullet points */
+  list-style: none;
   background-color: #f9f9f9;
   padding: 10px;
   border-radius: 4px;
-  min-width: 150px; /* Adjust as needed */
+  min-width: 150px;
   text-align: center;
   transition: transform 0.2s, box-shadow 0.2s;
 }
@@ -51,7 +51,7 @@
   padding: 10px;
   cursor: pointer;
   z-index: 1;
-  border-radius: 50%; /* Circular arrows */
+  border-radius: 50%;
   transition: background-color 0.3s;
 }
 
