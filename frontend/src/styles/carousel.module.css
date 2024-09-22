@@ -1,20 +1,22 @@
+/* carousel.module.css */
+
 .carouselContainer {
   position: relative;
   display: flex;
   align-items: center;
   overflow: hidden;
+  margin-bottom: 20px; /* Spacing between carousels */
 }
 
 .carousel {
   display: flex;
   flex-direction: row;
   overflow-x: auto;
-  gap: 16px; /* Ensure gap between items */
+  gap: 1vw; /* Gap between items */
   scroll-snap-type: x mandatory;
   scroll-behavior: smooth;
   -ms-overflow-style: none; /* Hide scrollbar for IE and Edge */
   scrollbar-width: none; /* Hide scrollbar for Firefox */
-  list-style: none; /* Remove bullet points if any */
 }
 
 .carousel::-webkit-scrollbar {
@@ -25,6 +27,17 @@
   scroll-snap-align: start;
   flex-shrink: 0;
   list-style: none; /* Ensure no bullet points */
+  background-color: #f9f9f9;
+  padding: 10px;
+  border-radius: 4px;
+  min-width: 150px; /* Adjust as needed */
+  text-align: center;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.item:hover {
+  transform: scale(1.05);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
 
 .leftArrow,
@@ -38,7 +51,7 @@
   padding: 10px;
   cursor: pointer;
   z-index: 1;
-  border-radius: 50%; /* Optional: Make arrows circular */
+  border-radius: 50%; /* Circular arrows */
   transition: background-color 0.3s;
 }
 

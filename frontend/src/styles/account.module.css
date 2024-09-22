@@ -1,0 +1,114 @@
+/* account.module.css */
+
+/* Main Container */
+.main {
+  padding: 40px 20px;
+}
+
+/* User Information Section */
+.userInfo {
+  margin-bottom: 40px;
+}
+
+.userInfo h1 {
+  font-size: clamp(1.5rem, 3vw, 2.5rem);
+  margin-bottom: 10px;
+}
+
+.userInfo p {
+  font-size: clamp(1rem, 2vw, 1.25rem);
+  line-height: 1.6;
+}
+
+/* Favorites Section */
+.favoritesSection {
+  margin-bottom: 40px;
+}
+
+/* Favorite Subsections */
+.favoriteSubsection {
+  margin-bottom: 30px;
+}
+
+/* Favorite Headers */
+.favoriteHeader {
+  background-color: #ffffff;
+  padding: 8px 16px;
+  border: 1px solid #e0e0e0;
+  border-radius: 4px;
+  display: block;
+  margin: 50px auto 15px auto;
+  font-size: 1.0rem;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.05);
+  width: fit-content;
+}
+
+/* Container for h3 and Add Button */
+.favoriteHeaderContainer {
+    display: flex;
+    justify-content: center; /* Center the content horizontally */
+    align-items: center; /* Align items vertically */
+    gap: 10px; /* Space between h3 and button */
+    margin-bottom: 15px; /* Space below the header container */
+  }
+  
+/* Favorite Headers */
+.favoriteHeader {
+    background-color: #ffffff;
+    padding: 8px 16px;
+    border: 1px solid #e0e0e0;
+    border-radius: 4px;
+    display: inline-block; /* Allows centering via parent’s text-align */
+    font-size: 1.25rem;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.05);
+    max-width: 100%; /* Prevents overflow on smaller screens */
+}
+
+/* Add Button */
+.addButton {
+    border: 1px solid #e0e0e0;
+    cursor: pointer; /* Change cursor to pointer on hover */
+    display: flex; /* Use Flexbox for centering */
+    align-items: center; /* Vertically center the SVG */
+    justify-content: center; /* Horizontally center the SVG */
+    width: 32px; /* Set a fixed width */
+    height: 32px; /* Set a fixed height */
+    border-radius: 4px; /* Rounded corners */
+    transition: background-color 0.3s, transform 0.2s; /* Smooth transitions */
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.05); /* Subtle shadow for depth */
+    background-color: #ffffff;
+}
+
+.addButton:hover {
+transform: scale(1.05); /* Slightly enlarge the button on hover */
+}
+
+.addButton:focus {
+outline: 2px solid #333; /* Visible outline on focus for accessibility */
+outline-offset: 2px;
+}
+
+/* Ensure SVG Icons Fit Within the Button */
+.addButton svg {
+width: 20px; /* Adjust as needed */
+height: 20px; /* Adjust as needed */
+fill: #333; /* Set SVG color */
+transition: fill 0.3s; /* Smooth color transition */
+}
+
+.addButton:hover svg {
+fill: #C4EEE4; /* Change SVG color on hover */
+}
+
+/* Other Sections (Your Watchlists, Recently Watched) */
+.otherSection {
+  margin-bottom: 40px;
+}
+
+/* Responsive Adjustments */
+@media (min-width: 700px) {
+  .main {
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+}

@@ -1,11 +1,12 @@
-'use client'; // Ensures this component is a client-side component
+// components/carousel.tsx
+'use client';
 
 import React, { useRef, useState, KeyboardEvent, useEffect } from 'react';
 import Item from './item'; // Ensure correct path
-import styles from '../styles/carousel.module.css';
+import styles from '../styles/carousel.module.css'; // Adjust the path as necessary
 
 interface CarouselProps {
-  type: 'anime' | 'watchlist'; // Prop to specify the carousel type
+  type: 'anime' | 'manga' | 'character' | 'watchlist' | 'recently-watched'; // Extended types
 }
 
 export default function Carousel({ type }: CarouselProps) {
@@ -13,8 +14,35 @@ export default function Carousel({ type }: CarouselProps) {
   const [canScrollLeft, setCanScrollLeft] = useState(false);
   const [canScrollRight, setCanScrollRight] = useState(true);
 
-  // Determine the base link based on the carousel type
-  const baseLink = type === 'anime' ? '/specific-anime' : '/specific-watchlist';
+  // Determine the base link and item prefix based on the carousel type
+  let baseLink = '';
+  let itemPrefix = '';
+
+  switch (type) {
+    case 'anime':
+      baseLink = '/specific-anime';
+      itemPrefix = 'Anime';
+      break;
+    case 'manga':
+      baseLink = '/specific-manga';
+      itemPrefix = 'Manga';
+      break;
+    case 'character':
+      baseLink = '/specific-character';
+      itemPrefix = 'Character';
+      break;
+    case 'watchlist':
+      baseLink = '/specific-watchlist';
+      itemPrefix = 'Watchlist';
+      break;
+    case 'recently-watched':
+      baseLink = '/specific-recent';
+      itemPrefix = 'Recently Watched';
+      break;
+    default:
+      baseLink = '/';
+      itemPrefix = 'Item';
+  }
 
   // Handle scroll events to manage arrow button visibility
   const handleScroll = () => {
@@ -24,7 +52,7 @@ export default function Carousel({ type }: CarouselProps) {
     const { scrollLeft, scrollWidth, clientWidth } = carousel;
 
     setCanScrollLeft(scrollLeft > 0);
-    setCanScrollRight(scrollLeft + clientWidth < scrollWidth);
+    setCanScrollRight(scrollLeft + clientWidth < scrollWidth - 1); // Adjusted for precision
   };
 
   // Scroll right
@@ -58,14 +86,14 @@ export default function Carousel({ type }: CarouselProps) {
     }
   };
 
-  // Generate 10 items with unique links
+  // Generate items based on the carousel type
   const renderItems = () => {
     const items = [];
     for (let i = 1; i <= 10; i++) {
       items.push(
         <Item
           key={i}
-          name={`${type === 'anime' ? 'Anime' : 'Watchlist'} ${i}`}
+          name={`${itemPrefix} ${i}`}
           link={`${baseLink}/${i}`} // Dynamic link per item (e.g., /specific-anime/3)
         />
       );
@@ -76,12 +104,17 @@ export default function Carousel({ type }: CarouselProps) {
   // Initial check to set button visibility
   useEffect(() => {
     handleScroll(); // Set initial button states
+    // Add event listener for resize to handle dynamic content
+    window.addEventListener('resize', handleScroll);
+    return () => {
+      window.removeEventListener('resize', handleScroll);
+    };
   }, []);
 
   return (
     <div
       className={styles.carouselContainer}
-      aria-label={`${type === 'anime' ? 'Anime' : 'Watchlist'} Carousel`}
+      aria-label={`${itemPrefix} Carousel`}
     >
       {canScrollLeft && (
         <button
