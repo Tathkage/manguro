@@ -1,268 +1,86 @@
-const { fetchAnimeData, fetchMangaData, fetchGenreData, fetchTagData } = require('./anilistFetcher');
-const { 
-    transformAnimeData, 
-    transformMangaData,
-    transformGenreData, 
-    transformTagData, 
-    transformAnimeGenreData, 
-    transformMangaGenreData,
-    transformAnimeTagData,
-    transformMangaTagData
-} = require('./anilistTransformer');
-const { 
-    insertAnimeData, 
-    insertMangaData,
-    insertGenreData, 
-    insertTagData, 
-    insertAnimeGenreData, 
-    insertMangaGenreData,
-    insertAnimeTagData,
-    insertMangaTagData
-} = require('./anilistInserter');
+const { fetchMediaData, fetchGenreData, fetchTagData } = require('./anilistFetcher');
+const { transformMediaData, transformAttributeData, transformedMediaAttributeData, transformMediaAttributeData } = require('./anilistTransformer');
+const { insertData } = require('./anilistInserter');
 
-async function getAllAnimeByPage(accessToken) {
-    let page = 376; // can change page number for debugging
-    const perPage = 50;  
-    const batchSize = 25;
-    let hasNextPage = true;
+const animeFields = [
+    'anime_id', 'romaji_name', 'english_name', 'native_name', 'description', 
+    'cover_image', 'trailer_url', 'episode_duration', 'episode_count', 
+    'start_date', 'end_date', 'year', 'season', 'animation_studio', 
+    'producers', 'format', 'source'
+];
 
+const mangaFields = [
+    'manga_id', 'romaji_name', 'english_name', 'native_name', 'description', 
+    'cover_image', 'chapter_count', 'volume_count', 'start_date', 
+    'end_date', 'format', 'source'
+];
+
+function filterFieldsByType(type, data) {
+    const validFields = type === 'anime' ? animeFields : mangaFields;
+
+    return Object.fromEntries(
+        Object.entries(data).filter(([key]) => validFields.includes(key))
+    );
+}
+
+async function fetchAndInsertData(type, accessToken, map = null) {
     try {
-        while (hasNextPage) {
-            let animeList = [];
-
-            for (let i = 0; i < batchSize && hasNextPage; i++) {
-                const { anime: fetchedAnime, hasNextPage: nextPageExists, retry } = await fetchAnimeData(accessToken, page, perPage);
-                if (retry) {
-                    i--;
-                    continue;
-                }
-                animeList = animeList.concat(fetchedAnime);
-                hasNextPage = nextPageExists;
-                page++;
-            }
-
-            console.log(`Total number of anime fetched: ${animeList.length}`);
-
-            const transformedAnimeList = transformAnimeData(animeList);
-            await insertAnimeData(transformedAnimeList);
-            console.log(`Inserted batch of 25 pages, currently at page: ${page - 1}`);
+        if (type === 'genres') {
+            const genreList = await fetchGenreData(accessToken);
+            const transformedGenreList = transformAttributeData(genreList, 'genre');
+            await insertData(transformedGenreList, 'Genre');
         }
-        console.log('All anime have been inserted into the database.');
-    } 
-    catch (error) {
-        console.error('Error fetching anime data:', error);
-        throw error;
-    }
-}
-
-async function getAllMangaByPage(accessToken) {
-    let page = 1476; // can change page number for debugging
-    const perPage = 50;  
-    const batchSize = 25;
-    let hasNextPage = true;
-
-    try {
-        while (hasNextPage) {
-            let mangaList = [];
-
-            for (let i = 0; i < batchSize && hasNextPage; i++) {
-                const { manga: fetchedManga, hasNextPage: nextPageExists, retry } = await fetchMangaData(accessToken, page, perPage);
-                if (retry) {
-                    i--;
-                    continue;
-                }
-                mangaList = mangaList.concat(fetchedManga);
-                hasNextPage = nextPageExists;
-                page++;
-            }
-
-            console.log(`Total number of manga fetched: ${mangaList.length}`);
-
-            const transformedMangaList = transformMangaData(mangaList);
-            await insertMangaData(transformedMangaList);
-            console.log(`Inserted batch of 25 pages, currently at page: ${page - 1}`);
+        else if (type === 'tags') {
+            const tagList = await fetchTagData(accessToken);
+            const transformedTagList = transformAttributeData(tagList, 'tag');
+            await insertData(transformedTagList, 'Tag');
         }
-        console.log('All manga have been inserted into the database');
-    }
-    catch (error) {
-        console.error('Error fetching manga data:', error);
-        throw error;
-    }
-}
+        else {
+            const mediaType = type.includes('anime') ? 'anime' : 'manga';
+            let page = mediaType === 'anime' ? 376 : 1476;
+            const perPage = 50;
+            const batchSize = 25;
+            let hasNextPage = true;
 
-async function getAllGenres(accessToken) {
-    try {
-        const genreList = await fetchGenreData(accessToken);
-        const transformedGenreList = transformGenreData(genreList);
-        await insertGenreData(transformedGenreList);
-        console.log('All genres have been inserted into the database.');
-    }
-    catch (error) {
-        console.error('Error fetching genre data:', error);
-        throw error;
-    }
-}
+            while (hasNextPage) {
+                let mediaList = [];
 
-async function getAllTags(accessToken) {
-    try {
-        const tagList = await fetchTagData(accessToken);
-        const transformedTagList = transformTagData(tagList);
-        await insertTagData(transformedTagList);
-        console.log('All tags have been inserted into the database.');
-    }
-    catch (error) {
-        console.error('Error fetching tag data:', error);
-        throw error;
-    }
-}
-
-async function getAllAnimeGenres(accessToken, genreMap) {
-    let page = 378; // can change page number for debugging
-    const perPage = 50;  
-    const batchSize = 25;
-    let hasNextPage = true;
-
-    try {
-        while (hasNextPage) {
-            let animeGenreList = [];
-
-            for (let i = 0; i < batchSize && hasNextPage; i++) {
-                const { anime: fetchedAnime, hasNextPage: nextPageExists, retry } = await fetchAnimeData(accessToken, page, perPage);
-                if (retry) {
-                    i--;
-                    continue;
+                for (let i = 0; i < batchSize && hasNextPage; i++) {
+                    const { media : fetchedMedia, hasNextPage: nextPageExists, retry } = await fetchMediaData(accessToken, page, perPage, mediaType);
+                    if (retry) {
+                        i--;
+                        continue;
+                    }
+                    mediaList = mediaList.concat(fetchedMedia);
+                    hasNextPage = nextPageExists;
+                    page++;
                 }
-                animeGenreList = animeGenreList.concat(fetchedAnime)
-                hasNextPage = nextPageExists;
-                page++;
-            }
 
-            console.log(`Total number of anime fetched: ${animeGenreList.length}`);
+                console.log(`Total number of ${mediaType} fetched: ${mediaList.length}`);
 
-            const transformedAnimeGenreList = transformAnimeGenreData(animeGenreList, genreMap);
-            await insertAnimeGenreData(transformedAnimeGenreList);
-            console.log(`Inserted batch of 25 pages, currently at page: ${page - 1}`);
-        }
-        console.log('All anime_genres have been inserted into the database.');
-    }
-    catch (error) {
-        console.error('Error fetching anime_genre data:', error);
-        throw error;
-    }
-}
+                const transformedMediaList = transformMediaData(mediaList, mediaType);
+                const filteredMediaList = transformedMediaList.map(item => filterFieldsByType(mediaType, item));
+                await insertData(filteredMediaList, mediaType.charAt(0).toUpperCase() + mediaType.slice(1));
 
-async function getAllMangaGenres(accessToken, genreMap) {
-    let page = 1476; // can change page number for debugging
-    const perPage = 50;  
-    const batchSize = 25;
-    let hasNextPage = true;
-
-    try {
-        while (hasNextPage) {
-            let mangaGenreList = [];
-
-            for (let i = 0; i < batchSize && hasNextPage; i++) {
-                const { manga: fetchedManga, hasNextPage: nextPageExists, retry } = await fetchMangaData(accessToken, page, perPage);
-                if (retry) {
-                    i--;
-                    continue;
+                if (['animegenres', 'mangagenres'].includes(type)) {
+                    const transformedMediaGenreData = transformMediaAttributeData(mediaList, mediaType, map, 'genres');
+                    await insertData(transformedMediaGenreData, mediaType.charAt(0).toUpperCase() + mediaType.slice(1) + 'Genre');
                 }
-                mangaGenreList = mangaGenreList.concat(fetchedManga)
-                hasNextPage = nextPageExists;
-                page++;
-            }
-
-            console.log(`Total number of manga fetched: ${mangaGenreList.length}`);
-
-            const transformedMangaGenreList = transformMangaGenreData(mangaGenreList, genreMap);
-            await insertMangaGenreData(transformedMangaGenreList);
-            console.log(`Inserted batch of 25 pages, currently at page: ${page - 1}`);
-        }
-        console.log('All manga_genres have been inserted into the database.');
-    }
-    catch (error) {
-        console.error('Error fetching manga_genre data:', error);
-        throw error;
-    }
-}
-
-async function getAllAnimeTags(accessToken, tagMap) {
-    let page = 376; // can change page number for debugging
-    const perPage = 50;  
-    const batchSize = 25;
-    let hasNextPage = true;
-
-    try {
-        while (hasNextPage) {
-            let animeTagList = [];
-
-            for (let i = 0; i < batchSize && hasNextPage; i++) {
-                const { anime: fetchedAnime, hasNextPage: nextPageExists, retry } = await fetchAnimeData(accessToken, page, perPage);
-                if (retry) {
-                    i--;
-                    continue;
+                else if (['animetags', 'mangatags'].includes(type)) {
+                    const transformedMediaTagData = transformMediaAttributeData(mediaList, mediaType, map, 'tags');
+                    await insertData(transformedMediaTagData, mediaType.charAt(0).toUpperCase() + mediaType.slice(1) + 'Tag');
                 }
-                animeTagList = animeTagList.concat(fetchedAnime);
-                hasNextPage = nextPageExists;
-                page++;
-            }
-            
-            console.log(`Total number of anime fetched: ${animeTagList.length}`);
 
-            const transformedAnimeTagData = transformAnimeTagData(animeTagList, tagMap);
-            await insertAnimeTagData(transformedAnimeTagData);
-            console.log(`Inserted batch of 25 pages, currently at page: ${page - 1}`);
+                console.log(`Inserted batch of 25 pages, currently at page: ${page - 1}`);
+            }
         }
-        console.log('All anime_tags have been inserted into the database.');
+
+        console.log(`${type} have been inserted into the database.`)
     }
     catch (error) {
-        console.error('Error fetching anime_tag data:', error);
+        console.error(`Error fetching and inserting ${type} data:`, error);
         throw error;
     }
 }
 
-async function getAllMangaTags(accessToken, tagMap) {
-    let page = 1; // can change page number for debugging
-    const perPage = 50;  
-    const batchSize = 25;
-    let hasNextPage = true;
-
-    try {
-        while (hasNextPage) {
-            let mangaTagList = [];
-
-            for (let i = 0; i < batchSize && hasNextPage; i++) {
-                const { manga: fetchedManga, hasNextPage: nextPageExists, retry } = await fetchMangaData(accessToken, page, perPage);
-                if (retry) {
-                    i--;
-                    continue;
-                }
-                mangaTagList = mangaTagList.concat(fetchedManga);
-                hasNextPage = nextPageExists;
-                page++;
-            }
-            
-            console.log(`Total number of manga fetched: ${mangaTagList.length}`);
-
-            const transformedMangaTagData = transformMangaTagData(mangaTagList, tagMap);
-            await insertMangaTagData(transformedMangaTagData);
-            console.log(`Inserted batch of 25 pages, currently at page: ${page - 1}`);
-        }
-        console.log('All manga_tags have been inserted into the database.');
-    }
-    catch (error) {
-        console.error('Error fetching manga_tag data:', error);
-        throw error;
-    }
-}
-
-module.exports = { 
-    getAllAnimeByPage, 
-    getAllMangaByPage,
-    getAllGenres, 
-    getAllTags, 
-    getAllAnimeGenres, 
-    getAllMangaGenres,
-    getAllAnimeTags,
-    getAllMangaTags
-};
+module.exports = { fetchAndInsertData };
