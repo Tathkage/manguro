@@ -1,55 +1,31 @@
 const axios = require('axios');
 const sleep = require('../utils/sleep');
 
-async function fetchAnimeData(accessToken, page, perPage) {
+async function fetchMediaData(accessToken, page, perPage, type) {
     const query = `
         query ($page: Int, $perPage: Int) {
             Page(page: $page, perPage: $perPage) {
-                media(type: ANIME) {
+                media(type: ${type.toUpperCase()}) {
                     id
-                    title {
-                        romaji
-                        english
-                        native
-                    }
+                    title { romaji english native }
                     description
-                    coverImage {
-                        extraLarge
-                    }
-                    trailer {
-                        id
-                        site
-                    }
+                    coverImage { extraLarge }
+                    trailer { id site }
                     duration
                     episodes
-                    startDate {
-                        year
-                        month
-                        day
-                    }
-                    endDate {
-                        year
-                        month
-                        day
-                    }
+                    chapters volumes
+                    startDate { year month day }
+                    endDate { year month day }
                     season
                     seasonYear
-                    studios {
-                        nodes {
-                            name
-                            isAnimationStudio
-                        }
-                    }
+                    studios { nodes { name isAnimationStudio } }
                     format
                     source(version: 3)
                     genres
-                    tags {
-                        name
-                    }
+                    tags { name }
+                    relations { edges { relationType(version: 2) node { id type } } }
                 }
-                pageInfo {
-                    hasNextPage
-                }
+                pageInfo { hasNextPage }
             }
         }
     `;
@@ -57,10 +33,7 @@ async function fetchAnimeData(accessToken, page, perPage) {
     try {
         const response = await axios.post(
             'https://graphql.anilist.co',
-            { 
-                query, 
-                variables: { page, perPage } 
-            },
+            { query, variables: { page, perPage } },
             {
                 headers: {
                     Authorization: `Bearer ${accessToken}`,
@@ -71,103 +44,27 @@ async function fetchAnimeData(accessToken, page, perPage) {
         );
 
         const data = response.data.data.Page;
-        return { anime: data.media, hasNextPage: data.pageInfo.hasNextPage };
+        return { media: data.media, hasNextPage: data.pageInfo.hasNextPage };
     } 
     catch (error) {
         if (error.response && error.response.status === 429) {
             console.log('Rate limited. Waiting 20 seconds before retrying...');
             await sleep(20000);
             return { retry: true };
-        } else {
-            throw error;
-        }
-    }
-}
-
-async function fetchMangaData(accessToken, page, perPage) {
-    const query = `
-        query ($page: Int, $perPage: Int) {
-            Page(page: $page, perPage: $perPage) {
-                media(type: MANGA) {
-                    id
-                    title {
-                        romaji
-                        english
-                        native
-                    }
-                    description
-                    coverImage {
-                        extraLarge
-                    }
-                    chapters
-                    volumes
-                    startDate {
-                        year
-                        month
-                        day
-                    }
-                    endDate {
-                        year
-                        month
-                        day
-                    }
-                    format
-                    source(version: 3)
-                    genres
-                    tags {
-                        name
-                    }
-                }
-                pageInfo {
-                    hasNextPage
-                }
-            }
-        }
-    `;
-
-    try {
-        const response = await axios.post(
-            'https://graphql.anilist.co',
-            { 
-                query, 
-                variables: { page, perPage } 
-            },
-            {
-                headers: {
-                    Authorization: `Bearer ${accessToken}`,
-                    'Content-Type': 'application/json',
-                    Accept: 'application/json',
-                },
-            }
-        );
-
-        const data = response.data.data.Page;
-        return { manga: data.media, hasNextPage: data.pageInfo.hasNextPage };
-    } 
-    catch (error) {
-        if (error.response && error.response.status === 429) {
-            console.log('Rate limited. Waiting 20 seconds before retrying...');
-            await sleep(20000);
-            return { retry: true };
-        } else {
+        } 
+        else {
             throw error;
         }
     }
 }
 
 async function fetchGenreData(accessToken) {
-    const query = `
-        query {
-            GenreCollection
-        }
-    `
+    const query = `query { GenreCollection }`;
 
     try {
         const response = await axios.post(
             'https://graphql.anilist.co',
-            { 
-                query 
-            },
+            { query },
             {
                 headers: {
                     Authorization: `Bearer ${accessToken}`,
@@ -185,20 +82,12 @@ async function fetchGenreData(accessToken) {
 }
 
 async function fetchTagData(accessToken) {
-    const query = `
-        query {
-            MediaTagCollection {
-                name
-            }
-        }
-    `
+    const query = `query { MediaTagCollection { name } }`;
 
     try {
         const response = await axios.post(
             'https://graphql.anilist.co',
-            { 
-                query 
-            },
+            { query },
             {
                 headers: {
                     Authorization: `Bearer ${accessToken}`,
@@ -215,4 +104,4 @@ async function fetchTagData(accessToken) {
     }
 }
 
-module.exports = { fetchAnimeData, fetchMangaData, fetchGenreData, fetchTagData };
+module.exports = { fetchMediaData, fetchGenreData, fetchTagData };

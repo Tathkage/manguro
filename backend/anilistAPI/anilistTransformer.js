@@ -1,163 +1,83 @@
-const { seasonMap, formatMap, sourceMap } = require('../db/dbConfig');
+const { seasonMap, formatMap, sourceMap, relationMap } = require('../db/dbConfig');
 const cleanString = require('../utils/cleanString');
 
-function transformAnimeData(animeList) {
-    return animeList.map(anime => {
-        anime.season = seasonMap[anime.season] || anime.season;
-        anime.format = formatMap[anime.format] || anime.format;
-        anime.source = sourceMap[anime.source] || anime.source;
+function transformMediaData(mediaList, type) {
+    return mediaList.map(media => {
+        media.season = seasonMap[media.season] || media.season;
+        media.format = formatMap[media.format] || media.format;
+        media.source = sourceMap[media.source] || media.source;
 
-        const producers = anime.studios.nodes
+        const producers = media.studios?.nodes
             .filter(studio => !studio.isAnimationStudio)  
-            .map(studio => studio.name);
+            .map(studio => studio.name) || [];
 
         return {
-            anime_id: anime.id,
-            romaji_name: anime.title.romaji ? cleanString(anime.title.romaji) : null,
-            english_name: anime.title.english ? cleanString(anime.title.english) : null,
-            native_name: anime.title.native ? cleanString(anime.title.native) : null,
-            description: anime.description ? cleanString(anime.description) : null,
-            cover_image: anime.coverImage && anime.coverImage.extraLarge ? anime.coverImage.extraLarge : null,
-            trailer_url: anime.trailer && anime.trailer.site ? `https://www.${anime.trailer.site}.com/watch?v=${anime.trailer.id}` : null,
-            episode_duration: anime.duration || null,
-            episode_count: anime.episodes || null,
-            start_date: anime.startDate && anime.startDate.year && anime.startDate.month && anime.startDate.day 
-                ? `${anime.startDate.year}-${anime.startDate.month}-${anime.startDate.day}` 
+            [`${type}_id`]: media.id,
+            romaji_name: media.title?.romaji ? cleanString(media.title.romaji) : null,
+            english_name: media.title?.english ? cleanString(media.title.english) : null,
+            native_name: media.title?.native ? cleanString(media.title.native) : null,
+            description: media.description ? cleanString(media.description) : null,
+            cover_image: media.coverImage?.extraLarge || null,
+            trailer_url: media.trailer?.site ? `https://www.${media.trailer.site}.com/watch?v=${media.trailer.id}` : null,
+            episode_duration: type === 'anime' ? media.duration || null : null,
+            episode_count: type === 'anime' ? media.episodes || null : null,
+            chapter_count: type === 'manga' ? media.chapters || null : null,
+            volume_count: type === 'manga' ? media.volumes || null : null,
+            start_date: media.startDate && media.startDate.year && media.startDate.month && media.startDate.day 
+                ? `${media.startDate.year}-${media.startDate.month}-${media.startDate.day}` 
                 : null,
-            end_date: anime.endDate && anime.endDate.year && anime.endDate.month && anime.endDate.day 
-                ? `${anime.endDate.year}-${anime.endDate.month}-${anime.endDate.day}` 
+            end_date: media.endDate && media.endDate.year && media.endDate.month && media.endDate.day 
+                ? `${media.endDate.year}-${media.endDate.month}-${media.endDate.day}` 
                 : null,
-            year: anime.seasonYear || null,
-            season: anime.season || null,
-            animation_studio: anime.studios && anime.studios.nodes.length > 0 && anime.studios.nodes[0].isAnimationStudio 
-                ? anime.studios.nodes[0].name 
-                : null,
+            year: media.seasonYear || null,
+            season: media.season || null,
+            animation_studio: media.studios?.nodes[0]?.isAnimationStudio ? media.studios.nodes[0].name : null,
             producers: producers.length > 0 ? producers : null,
-            format: anime.format || null,
-            source: anime.source || null
+            format: media.format || null,
+            source: media.source || null
         };
     });
 }
 
-function transformMangaData(mangaList) {
-    return mangaList.map(manga => {
-        manga.format = formatMap[manga.format] || manga.format;
-        manga.source = sourceMap[manga.source] || manga.source;
-
-        return {
-            manga_id: manga.id,
-            romaji_name: manga.title.romaji ? cleanString(manga.title.romaji) : null,
-            english_name: manga.title.english ? cleanString(manga.title.english) : null,
-            native_name: manga.title.native ? cleanString(manga.title.native) : null,
-            description: manga.description ? cleanString(manga.description) : null,
-            cover_image: manga.coverImage && manga.coverImage.extraLarge ? manga.coverImage.extraLarge : null,
-            chapter_count: manga.chapters || null,
-            volume_count: manga.volumes || null,
-            start_date: manga.startDate && manga.startDate.year && manga.startDate.month && manga.startDate.day 
-                ? `${manga.startDate.year}-${manga.startDate.month}-${manga.startDate.day}` 
-                : null,
-            end_date: manga.endDate && manga.endDate.year && manga.endDate.month && manga.endDate.day 
-                ? `${manga.endDate.year}-${manga.endDate.month}-${manga.endDate.day}` 
-                : null,
-            format: manga.format || null,
-            source: manga.source || null
-        };
-    });
-}
-
-function transformGenreData(genreList) {
+function transformAttributeData(attributeList, type) {
     let nextId = 1;
-
-    return genreList.map(genre => {
-        return {
-            genre_id: nextId++,
-            name: genre
-        };
-    });
+    return attributeList.map(attribute => ({
+        [`${type}_id`]: nextId++,
+        name: attribute.name || attribute
+    }));
 }
 
-function transformTagData(tagList) {
-    let nextId = 1;
+function transformMediaAttributeData(mediaList, mediaType, attributeMap, attributeType) {
+    const singularAttribute = attributeType.slice(0, -1);
+    const mediaAttributeData = [];
 
-    return tagList.map(tag => {
-        return {
-            tag_id: nextId++,
-            name: tag.name
-        };
-    });
-}
-
-function transformAnimeGenreData(animeGenreList, genreMap) {
-    const animeGenreData = [];
-
-    animeGenreList.forEach(anime => {
-        anime.genres.forEach(genre => {
-            const genreId = genreMap[genre];
-            animeGenreData.push({
-                anime_id: anime.id,
-                genre_id: genreId
+    mediaList.forEach(media => {
+        media[attributeType].forEach(attribute => {
+            const attributeId = attributeMap[attribute.name || attribute];
+            mediaAttributeData.push({
+                [`${mediaType}_id`]: media.id,
+                [`${singularAttribute}_id`]: attributeId
             });
         });
     });
-
-    return animeGenreData;
+    return mediaAttributeData;
 }
 
-function transformMangaGenreData(mangaGenreList, genreMap) {
-    const mangaGenreData = [];
-
-    mangaGenreList.forEach(manga => {
-        manga.genres.forEach(genre => {
-            const genreId = genreMap[genre];
-            mangaGenreData.push({
-                manga_id: manga.id,
-                genre_id: genreId
-            });
-        });
+function transformRelatedMediaData(mediaList, mediaType) {
+    const relatedMediaData = [];
+    mediaList.forEach(media => {
+        media.relations.edges.forEach(relation => {
+            relation.relationType = relationMap[relation.relationType] || relation.relationType;
+            relatedMediaData.push({
+                anime_id: mediaType === 'anime' ? media.id: null,
+                manga_id: mediaType === 'manga' ? media.id : null,
+                related_anime_id: relation.node.type === 'ANIME' ? relation.node.id : null,
+                related_manga_id: relation.node.type === 'MANGA' ? relation.node.id : null,
+                relation_type: relation.relationType
+            })
+        })
     });
-
-    return mangaGenreData;
+    return relatedMediaData;
 }
 
-function transformAnimeTagData(animeTagList, tagMap) {
-    const animeTagData = [];
-
-    animeTagList.forEach(anime => {
-        anime.tags.forEach(tag => {
-            const tagId = tagMap[tag.name];
-            animeTagData.push({
-                anime_id: anime.id,
-                tag_id: tagId
-            });
-        });
-    });
-
-    return animeTagData;
-}
-
-function transformMangaTagData(mangaTagList, tagMap) {
-    const mangaTagData = [];
-
-    mangaTagList.forEach(manga => {
-        manga.tags.forEach(tag => {
-            const tagId = tagMap[tag.name];
-            mangaTagData.push({
-                manga_id: manga.id,
-                tag_id: tagId
-            });
-        });
-    });
-
-    return mangaTagData;
-}
-
-module.exports = { 
-    transformAnimeData, 
-    transformMangaData,
-    transformGenreData, 
-    transformTagData, 
-    transformAnimeGenreData, 
-    transformMangaGenreData,
-    transformAnimeTagData,
-    transformMangaTagData
-};
+module.exports = { transformMediaData, transformAttributeData, transformMediaAttributeData, transformRelatedMediaData };
