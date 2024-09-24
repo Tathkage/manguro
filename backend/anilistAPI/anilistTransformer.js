@@ -1,4 +1,4 @@
-const { seasonMap, formatMap, sourceMap } = require('../db/dbConfig');
+const { seasonMap, formatMap, sourceMap, relationMap } = require('../db/dbConfig');
 const cleanString = require('../utils/cleanString');
 
 function transformMediaData(mediaList, type) {
@@ -63,4 +63,21 @@ function transformMediaAttributeData(mediaList, mediaType, attributeMap, attribu
     return mediaAttributeData;
 }
 
-module.exports = { transformMediaData, transformAttributeData, transformMediaAttributeData };
+function transformRelatedMediaData(mediaList, mediaType) {
+    const relatedMediaData = [];
+    mediaList.forEach(media => {
+        media.relations.edges.forEach(relation => {
+            relation.relationType = relationMap[relation.relationType] || relation.relationType;
+            relatedMediaData.push({
+                anime_id: mediaType === 'anime' ? media.id: null,
+                manga_id: mediaType === 'manga' ? media.id : null,
+                related_anime_id: relation.node.type === 'ANIME' ? relation.node.id : null,
+                related_manga_id: relation.node.type === 'MANGA' ? relation.node.id : null,
+                relation_type: relation.relationType
+            })
+        })
+    });
+    return relatedMediaData;
+}
+
+module.exports = { transformMediaData, transformAttributeData, transformMediaAttributeData, transformRelatedMediaData };

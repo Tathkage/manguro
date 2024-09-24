@@ -5,7 +5,8 @@ const returnFieldMap = new Map([
     ['AnimeGenre', 'anime_genre_id'],
     ['MangaGenre', 'manga_genre_id'],
     ['AnimeTag', 'anime_tag_id'],
-    ['MangaTag', 'manga_tag_id']
+    ['MangaTag', 'manga_tag_id'],
+    ['RelatedMedia', 'related_media_id']
 ]);
 
 function generateMutation(entity, entityFields) {

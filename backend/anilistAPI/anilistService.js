@@ -1,5 +1,5 @@
 const { fetchMediaData, fetchGenreData, fetchTagData } = require('./anilistFetcher');
-const { transformMediaData, transformAttributeData, transformedMediaAttributeData, transformMediaAttributeData } = require('./anilistTransformer');
+const { transformMediaData, transformAttributeData, transformMediaAttributeData, transformRelatedMediaData } = require('./anilistTransformer');
 const { insertData } = require('./anilistInserter');
 
 const animeFields = [
@@ -23,7 +23,7 @@ function filterFieldsByType(type, data) {
     );
 }
 
-async function fetchAndInsertData(type, accessToken, map = null) {
+async function fetchAndInsertData(type, accessToken, map = null, relatedMedia = false) {
     try {
         if (type === 'genres') {
             const genreList = await fetchGenreData(accessToken);
@@ -37,9 +37,9 @@ async function fetchAndInsertData(type, accessToken, map = null) {
         }
         else {
             const mediaType = type.includes('anime') ? 'anime' : 'manga';
-            let page = mediaType === 'anime' ? 376 : 1476;
-            const perPage = 50;
-            const batchSize = 25;
+            let page = mediaType === 'anime' ? 1 : 1; // last batch of pages starts at 376 for anime, 1476 for manga, set to page 1 for full insertion
+            const perPage = 50; // default 50
+            const batchSize = 25; // default 25
             let hasNextPage = true;
 
             while (hasNextPage) {
@@ -57,12 +57,15 @@ async function fetchAndInsertData(type, accessToken, map = null) {
                 }
 
                 console.log(`Total number of ${mediaType} fetched: ${mediaList.length}`);
+                // const transformedMediaList = transformMediaData(mediaList, mediaType);
+                // const filteredMediaList = transformedMediaList.map(item => filterFieldsByType(mediaType, item));
+                // await insertData(filteredMediaList, mediaType.charAt(0).toUpperCase() + mediaType.slice(1));
 
-                const transformedMediaList = transformMediaData(mediaList, mediaType);
-                const filteredMediaList = transformedMediaList.map(item => filterFieldsByType(mediaType, item));
-                await insertData(filteredMediaList, mediaType.charAt(0).toUpperCase() + mediaType.slice(1));
-
-                if (['animegenres', 'mangagenres'].includes(type)) {
+                if (relatedMedia) {
+                    const transformedRelatedMediaData = transformRelatedMediaData(mediaList, mediaType);
+                    await insertData(transformedRelatedMediaData, 'RelatedMedia')
+                }
+                else if (['animegenres', 'mangagenres'].includes(type)) {
                     const transformedMediaGenreData = transformMediaAttributeData(mediaList, mediaType, map, 'genres');
                     await insertData(transformedMediaGenreData, mediaType.charAt(0).toUpperCase() + mediaType.slice(1) + 'Genre');
                 }
@@ -83,4 +86,9 @@ async function fetchAndInsertData(type, accessToken, map = null) {
     }
 }
 
-module.exports = { fetchAndInsertData };
+async function fetchAndInsertRelatedMediaData(accessToken) {
+    await fetchAndInsertData('anime', accessToken, null, true);
+    await fetchAndInsertData('manga', accessToken, null, true);
+}
+
+module.exports = { fetchAndInsertData, fetchAndInsertRelatedMediaData };

@@ -94,6 +94,18 @@ const MangaTagType = new GraphQLObjectType({
     })
 });
 
+const RelatedMediaType = new GraphQLObjectType({
+    name: 'RelatedMedia',
+    fields: () => ({
+        related_media_id: { type: GraphQLInt },
+        anime_id: { type: GraphQLInt },
+        manga_id: { type: GraphQLInt },
+        related_anime_id: { type: GraphQLInt },
+        related_manga_id: { type: GraphQLInt },
+        relation_type: { type: GraphQLString },
+    })
+})
+
 const RootQuery = new GraphQLObjectType({
     name: 'RootQueryType',
     fields: {
@@ -415,6 +427,40 @@ const Mutation = new GraphQLObjectType({
                 catch (err) {
                     console.error('Error inserting manga_tag:', err);
                     throw new Error('Failed to insert manga_tag');
+                }
+            }
+        },
+        addRelatedMedia: {
+            type: RelatedMediaType,
+            args: {
+                anime_id: { type: GraphQLInt },
+                manga_id: { type: GraphQLInt },
+                related_anime_id: { type: GraphQLInt },
+                related_manga_id: { type: GraphQLInt },
+                relation_type: { type: GraphQLString },
+            },
+            async resolve(parent, args) {
+                try {
+                    query = `
+                        INSERT INTO public.related_media (anime_id, manga_id, related_anime_id, related_manga_id, relation_type)
+                        VALUES ($1, $2, $3, $4, $5)
+                        ON CONFLICT DO NOTHING
+                        RETURNING related_media_id;
+                    `;
+
+                    const values = [
+                        args.anime_id,
+                        args.manga_id,
+                        args.related_anime_id,
+                        args.related_manga_id,
+                        args.relation_type
+                    ];
+                    const result = await pool.query(query, values);
+                    return result.rows[0];
+                }
+                catch (err) {
+                    console.error('Error inserting related_media:', err);
+                    throw new Error('Failed to insert related_media');
                 }
             }
         }

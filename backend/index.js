@@ -6,7 +6,7 @@ const schema = require('./schema/schema');
 const { graphql } = require('graphql');
 require('dotenv').config();
 
-const { fetchAndInsertData } = require('./anilistAPI/anilistService');
+const { fetchAndInsertData, fetchAndInsertRelatedMediaData } = require('./anilistAPI/anilistService');
 
 const app = express();
 
@@ -70,7 +70,12 @@ app.get('/callback', async (req, res) => {
             return map;
         }, {}) : null;
 
-        await fetchAndInsertData(type, accessToken, dataMap);
+        if (['relatedmedia'].includes(type)) {
+            await fetchAndInsertRelatedMediaData(accessToken);
+        }
+        else {
+            await fetchAndInsertData(type, accessToken, dataMap, false);
+        }
         res.json({ success: true, message: `${type} inserted successfully!` });
     }
     catch (error) {

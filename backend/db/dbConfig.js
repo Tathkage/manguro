@@ -36,4 +36,20 @@ const sourceMap = {
     PICTURE_BOOK: 'Picture Book'
 };
 
-module.exports = { seasonMap, formatMap, sourceMap };
+const relationMap = {
+    ADAPTATION: 'Adaptation',
+    PREQUEL: 'Prequel',
+    SEQUEL: 'Sequel',
+    PARENT: 'Parent',
+    SIDE_STORY: 'Side Story',
+    CHARACTER: 'Character',
+    SUMMARY: 'Summary',
+    ALTERNATIVE: 'Alternative',
+    SPIN_OFF: 'Spin Off',
+    OTHER: 'Other',
+    SOURCE: 'Source',
+    COMPILATION: 'Compilation',
+    CONTAINS: 'Contains'
+};
+
+module.exports = { seasonMap, formatMap, sourceMap, relationMap };

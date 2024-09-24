@@ -23,6 +23,7 @@ async function fetchMediaData(accessToken, page, perPage, type) {
                     source(version: 3)
                     genres
                     tags { name }
+                    relations { edges { relationType(version: 2) node { id type } } }
                 }
                 pageInfo { hasNextPage }
             }
