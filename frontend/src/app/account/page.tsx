@@ -18,31 +18,44 @@ export default function Account() {
     <main className={styles.main}>
       {/* User Information Section */}
       <section className={styles.userInfo} aria-labelledby="user-info-heading">
-        {/* Row 1: Username */}
-        <h1 id="user-info-heading">Username</h1>
+        {/* Profile Picture */}
+        <div className={styles.profilePicture}>
+          <Image
+            src={ProfilePicture}
+            alt="Default user profile picture: manguro's female mascot."
+            width={150}
+            height={150}
+            priority={true}
+            className={styles.profileImage}
+          />
+        </div>
 
-        {/* Row 2: Profile Picture and Bio */}
-        <div className={styles.userDetails}>
-          {/* Profile Picture */}
-          <div className={styles.profilePicture}>
-            <Image
-              src={ProfilePicture}
-              alt="Default user profile picture: manguro's female mascot."
-              width={150}
-              height={150}
-              priority={true}
-              className={styles.profileImage}
-            />
-          </div>
+        {/* Username */}
+        <h1 id="user-info-heading" className={styles.username}>Username</h1>
 
-          {/* Profile Bio */}
-          <div className={styles.profileBio}>
-            <p>
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras ut odio lorem.
-              Ut convallis fermentum nibh id laoreet. Maecenas euismod nec velit vitae congue.
-              Phasellus.
-            </p>
+        {/* Profile's Social Stats */}
+        <div className={styles.socialStatsRow}>
+          <div className={styles.socialStatItem}>
+            <span className={styles.statNumber}>113</span>
+            <span className={styles.statLabel}>Followers</span>
           </div>
+          <div className={styles.socialStatItem}>
+            <span className={styles.statNumber}>346</span>
+            <span className={styles.statLabel}>Likes</span>
+          </div>
+          <div className={styles.socialStatItem}>
+            <span className={styles.statNumber}>954</span>
+            <span className={styles.statLabel}>Saves</span>
+          </div>
+        </div>
+
+        {/* Profile Bio */}
+        <div className={styles.profileBio}>
+          <p>
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras ut odio lorem.
+            Ut convallis fermentum nibh id laoreet. Maecenas euismod nec velit vitae congue.
+            Phasellus.
+          </p>
         </div>
       </section>
 
