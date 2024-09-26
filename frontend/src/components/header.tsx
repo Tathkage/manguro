@@ -1,7 +1,7 @@
 import { useRouter } from 'next/router';
 import Link from 'next/link';
-import MenuIcon from '../../public/icons/menu-icon.svg'; // Update with actual path
-import OpenMenuIcon from '../../public/icons/open-menu-icon.svg'; // Update with actual path
+import MenuIcon from '../../public/icons/menu-icon.svg';
+import OpenMenuIcon from '../../public/icons/open-menu-icon.svg';
 import { useState, useEffect } from 'react';
 
 export default function Header() {
@@ -20,9 +20,9 @@ export default function Header() {
 
   const getHeaderClass = () => {
     if (router.pathname === '/signup') {
-      return 'alt-header'; // Green header for the signup page
+      return 'alt-header';
     } else {
-      return 'main-header'; // Pink header for the home page and others
+      return 'main-header';
     }
   };
 

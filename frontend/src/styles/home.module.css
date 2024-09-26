@@ -60,25 +60,25 @@
 }
 
 .carouselSection {
-    overflow: hidden; /* Hide overflow content */
+    overflow: hidden;
     padding: 16px;
 }
   
 .carousel {
     display: flex;
-    flex-direction: row; /* Horizontal alignment of items */
-    overflow-x: auto; /* Horizontal scrolling */
-    scroll-snap-type: x mandatory; /* Snap scrolling */
-    gap: 16px; /* Space between items */
+    flex-direction: row;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    gap: 16px;
     padding: 16px;
 }
   
 .carousel::-webkit-scrollbar {
-    display: none; /* Hide the scrollbar */
+    display: none;
 }
   
 .item {
-    scroll-snap-align: start; /* Ensure each item snaps into place */
+    scroll-snap-align: start;
 }  
 
 @media (min-width: 700px) {

@@ -26,9 +26,9 @@
   }
   
   .itemLink {
-    text-decoration: none; /* Remove underline from the link */
-    color: inherit; /* Inherit text color to maintain the design */
-    display: block; /* Make the link fill the entire item area */
+    text-decoration: none;
+    color: inherit;
+    display: block;
   }
   
   .itemLink:hover .rectangle {
