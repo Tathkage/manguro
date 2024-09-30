@@ -1,30 +1,49 @@
+/* carousel.module.css */
+
 .carouselContainer {
   position: relative;
   display: flex;
   align-items: center;
   overflow: hidden;
+  margin-bottom: 20px;
 }
 
 .carousel {
-  display: flex;
-  flex-direction: row;
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: minmax(150px, 1fr);
   overflow-x: auto;
-  gap: 16px; /* Ensure gap between items */
   scroll-snap-type: x mandatory;
-  scroll-behavior: smooth;
-  -ms-overflow-style: none; /* Hide scrollbar for IE and Edge */
-  scrollbar-width: none; /* Hide scrollbar for Firefox */
-  list-style: none; /* Remove bullet points if any */
+  gap: 16px;
+  padding: 16px;
+  align-items: center;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
 }
 
 .carousel::-webkit-scrollbar {
-  display: none; /* Hide scrollbar for Chrome, Safari, etc. */
+  display: none;
+}
+
+.carousel:focus {
+  outline: none;
 }
 
 .item {
   scroll-snap-align: start;
   flex-shrink: 0;
-  list-style: none; /* Ensure no bullet points */
+  list-style: none;
+  background-color: #f9f9f9;
+  padding: 10px;
+  border-radius: 4px;
+  min-width: 150px;
+  text-align: center;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.item:hover {
+  transform: scale(1.05);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
 
 .leftArrow,
@@ -38,7 +57,7 @@
   padding: 10px;
   cursor: pointer;
   z-index: 1;
-  border-radius: 50%; /* Optional: Make arrows circular */
+  border-radius: 50%;
   transition: background-color 0.3s;
 }
 

@@ -60,26 +60,31 @@
 }
 
 .carouselSection {
-    overflow: hidden; /* Hide overflow content */
+    overflow: hidden;
     padding: 16px;
 }
   
 .carousel {
-    display: flex;
-    flex-direction: row; /* Horizontal alignment of items */
-    overflow-x: auto; /* Horizontal scrolling */
-    scroll-snap-type: x mandatory; /* Snap scrolling */
-    gap: 16px; /* Space between items */
+    display: grid;
+    grid-auto-flow: column;
+    grid-auto-columns: minmax(300px, 1fr); /* Adjust min-width as needed */
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    gap: 16px;
     padding: 16px;
+    /* Optional: align items vertically */
+    align-items: center;
 }
-  
+
 .carousel::-webkit-scrollbar {
-    display: none; /* Hide the scrollbar */
+    display: none;
 }
-  
+
 .item {
-    scroll-snap-align: start; /* Ensure each item snaps into place */
-}  
+    scroll-snap-align: start;
+    /* Optional: ensure items take full height if needed */
+    width: 100%;
+} 
 
 @media (min-width: 700px) {
     .welcome-section {
