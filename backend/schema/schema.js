@@ -326,7 +326,14 @@ const Mutation = new GraphQLObjectType({
             },
             async resolve(parent, args) {
                 try {
-                    query = `
+                    const maxIdQuery = `SELECT COALESCE(MAX(anime_genre_id), 0) AS max_id FROM public.anime_genres;`;
+                    const maxIdResult = await pool.query(maxIdQuery);
+                    const maxId = maxIdResult.rows[0].max_id + 1;
+
+                    const updateSequenceQuery = `SELECT setval('anime_genres_anime_genre_id_seq', $1, false);`;
+                    await pool.query(updateSequenceQuery, [maxId]);
+
+                    const insertQuery = `
                         INSERT INTO public.anime_genres (anime_id, genre_id)
                         VALUES ($1, $2)
                         ON CONFLICT (anime_id, genre_id) DO NOTHING
@@ -337,7 +344,7 @@ const Mutation = new GraphQLObjectType({
                         args.anime_id,
                         args.genre_id
                     ];
-                    const result = await pool.query(query, values);
+                    const result = await pool.query(insertQuery, values);
                     return result.rows[0];
                 }
                 catch (err) {
@@ -354,7 +361,14 @@ const Mutation = new GraphQLObjectType({
             },
             async resolve(parent, args) {
                 try {
-                    query = `
+                    const maxIdQuery = `SELECT COALESCE(MAX(manga_genre_id), 0) AS max_id FROM public.manga_genres;`;
+                    const maxIdResult = await pool.query(maxIdQuery);
+                    const maxId = maxIdResult.rows[0].max_id + 1;
+
+                    const updateSequenceQuery = `SELECT setval('manga_genres_manga_genre_id_seq', $1, false);`;
+                    await pool.query(updateSequenceQuery, [maxId]);
+
+                    const insertQuery = `
                         INSERT INTO public.manga_genres (manga_id, genre_id)
                         VALUES ($1, $2)
                         ON CONFLICT (manga_id, genre_id) DO NOTHING
@@ -365,7 +379,7 @@ const Mutation = new GraphQLObjectType({
                         args.manga_id,
                         args.genre_id
                     ];
-                    const result = await pool.query(query, values);
+                    const result = await pool.query(insertQuery, values);
                     return result.rows[0];
                 }
                 catch (err) {
@@ -382,7 +396,14 @@ const Mutation = new GraphQLObjectType({
             },
             async resolve(parent, args) {
                 try {
-                    query = `
+                    const maxIdQuery = `SELECT COALESCE(MAX(anime_tag_id), 0) AS max_id FROM public.anime_tags;`;
+                    const maxIdResult = await pool.query(maxIdQuery);
+                    const maxId = maxIdResult.rows[0].max_id + 1;
+
+                    const updateSequenceQuery = `SELECT setval('anime_tags_anime_tag_id_seq', $1, false);`;
+                    await pool.query(updateSequenceQuery, [maxId]);
+
+                    const insertQuery = `
                         INSERT INTO public.anime_tags (anime_id, tag_id)
                         VALUES ($1, $2)
                         ON CONFLICT (anime_id, tag_id) DO NOTHING
@@ -393,7 +414,7 @@ const Mutation = new GraphQLObjectType({
                         args.anime_id,
                         args.tag_id
                     ];
-                    const result = await pool.query(query, values);
+                    const result = await pool.query(insertQuery, values);
                     return result.rows[0];
                 }
                 catch (err) {
@@ -410,7 +431,14 @@ const Mutation = new GraphQLObjectType({
             },
             async resolve(parent, args) {
                 try {
-                    query = `
+                    const maxIdQuery = `SELECT COALESCE(MAX(manga_tag_id), 0) AS max_id FROM public.manga_tags;`;
+                    const maxIdResult = await pool.query(maxIdQuery);
+                    const maxId = maxIdResult.rows[0].max_id + 1;
+
+                    const updateSequenceQuery = `SELECT setval('manga_tags_manga_tag_id_seq', $1, false);`;
+                    await pool.query(updateSequenceQuery, [maxId]);
+
+                    const insertQuery = `
                         INSERT INTO public.manga_tags (manga_id, tag_id)
                         VALUES ($1, $2)
                         ON CONFLICT (manga_id, tag_id) DO NOTHING
@@ -421,7 +449,7 @@ const Mutation = new GraphQLObjectType({
                         args.manga_id,
                         args.tag_id
                     ];
-                    const result = await pool.query(query, values);
+                    const result = await pool.query(insertQuery, values);
                     return result.rows[0];
                 }
                 catch (err) {
@@ -441,7 +469,14 @@ const Mutation = new GraphQLObjectType({
             },
             async resolve(parent, args) {
                 try {
-                    query = `
+                    const maxIdQuery = `SELECT COALESCE(MAX(related_media_id), 0) AS max_id FROM public.related_media;`;
+                    const maxIdResult = await pool.query(maxIdQuery);
+                    const maxId = maxIdResult.rows[0].max_id + 1;
+
+                    const updateSequenceQuery = `SELECT setval('related_media_related_media_id_seq', $1, false);`;
+                    await pool.query(updateSequenceQuery, [maxId]);
+
+                    const insertQuery = `
                         INSERT INTO public.related_media (anime_id, manga_id, related_anime_id, related_manga_id, relation_type)
                         VALUES ($1, $2, $3, $4, $5)
                         ON CONFLICT DO NOTHING
@@ -455,7 +490,7 @@ const Mutation = new GraphQLObjectType({
                         args.related_manga_id,
                         args.relation_type
                     ];
-                    const result = await pool.query(query, values);
+                    const result = await pool.query(insertQuery, values);
                     return result.rows[0];
                 }
                 catch (err) {

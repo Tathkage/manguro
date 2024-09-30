@@ -1,6 +1,15 @@
 const { seasonMap, formatMap, sourceMap, relationMap } = require('../db/dbConfig');
 const cleanString = require('../utils/cleanString');
 
+function isValidDate(year, month, day) {
+    if (!year || !month || !day) {
+        return false;
+    }
+
+    const date = new Date(year, month - 1, day);
+    return date.getFullYear() === year && date.getMonth() + 1 === month && date.getDate() === day;
+}
+
 function transformMediaData(mediaList, type) {
     return mediaList.map(media => {
         media.season = seasonMap[media.season] || media.season;
@@ -10,6 +19,14 @@ function transformMediaData(mediaList, type) {
         const producers = media.studios?.nodes
             .filter(studio => !studio.isAnimationStudio)  
             .map(studio => studio.name) || [];
+
+        const startDate = media.startDate && isValidDate(media.startDate.year, media.startDate.month, media.startDate.day)
+            ? `${media.startDate.year}-${media.startDate.month}-${media.startDate.day}`
+            : null;
+
+        const endDate = media.endDate && isValidDate(media.endDate.year, media.endDate.month, media.endDate.day)
+            ? `${media.endDate.year}-${media.endDate.month}-${media.endDate.day}`
+            : null;
 
         return {
             [`${type}_id`]: media.id,
@@ -23,12 +40,8 @@ function transformMediaData(mediaList, type) {
             episode_count: type === 'anime' ? media.episodes || null : null,
             chapter_count: type === 'manga' ? media.chapters || null : null,
             volume_count: type === 'manga' ? media.volumes || null : null,
-            start_date: media.startDate && media.startDate.year && media.startDate.month && media.startDate.day 
-                ? `${media.startDate.year}-${media.startDate.month}-${media.startDate.day}` 
-                : null,
-            end_date: media.endDate && media.endDate.year && media.endDate.month && media.endDate.day 
-                ? `${media.endDate.year}-${media.endDate.month}-${media.endDate.day}` 
-                : null,
+            start_date: startDate,
+            end_date: endDate,
             year: media.seasonYear || null,
             season: media.season || null,
             animation_studio: media.studios?.nodes[0]?.isAnimationStudio ? media.studios.nodes[0].name : null,
