@@ -9,18 +9,24 @@
 }
 
 .carousel {
-  display: flex;
-  flex-direction: row;
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: minmax(150px, 1fr);
   overflow-x: auto;
-  gap: 1vw;
   scroll-snap-type: x mandatory;
-  scroll-behavior: smooth;
-  -ms-overflow-style: none;
+  gap: 16px;
+  padding: 16px;
+  align-items: center;
   scrollbar-width: none;
+  -ms-overflow-style: none;
 }
 
 .carousel::-webkit-scrollbar {
   display: none;
+}
+
+.carousel:focus {
+  outline: none;
 }
 
 .item {
