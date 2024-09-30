@@ -37,7 +37,7 @@ async function fetchAndInsertData(type, accessToken, map = null, relatedMedia = 
         }
         else {
             const mediaType = type.includes('anime') ? 'anime' : 'manga';
-            let page = mediaType === 'anime' ? 1 : 1; // last batch of pages starts at 376 for anime, 1476 for manga, set to page 1 for full insertion
+            let page = mediaType === 'anime' ? 401 : 2151; // last batch of pages starts at 401 for anime, 2151 for manga, set to page 1 for full insertion
             const perPage = 50; // default 50
             const batchSize = 25; // default 25
             let hasNextPage = true;
@@ -57,9 +57,9 @@ async function fetchAndInsertData(type, accessToken, map = null, relatedMedia = 
                 }
 
                 console.log(`Total number of ${mediaType} fetched: ${mediaList.length}`);
-                // const transformedMediaList = transformMediaData(mediaList, mediaType);
-                // const filteredMediaList = transformedMediaList.map(item => filterFieldsByType(mediaType, item));
-                // await insertData(filteredMediaList, mediaType.charAt(0).toUpperCase() + mediaType.slice(1));
+                const transformedMediaList = transformMediaData(mediaList, mediaType);
+                const filteredMediaList = transformedMediaList.map(item => filterFieldsByType(mediaType, item));
+                await insertData(filteredMediaList, mediaType.charAt(0).toUpperCase() + mediaType.slice(1));
 
                 if (relatedMedia) {
                     const transformedRelatedMediaData = transformRelatedMediaData(mediaList, mediaType);
