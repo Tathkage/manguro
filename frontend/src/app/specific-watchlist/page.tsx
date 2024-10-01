@@ -32,16 +32,18 @@ export default function SpecificWatchlist() {
     <>
       <section className={styles.watchlistHeader} aria-labelledby="watchlist-heading">
         <h1 id="watchlist-heading">{watchlist.name}</h1>
+        
         {/* Tags Section */}
-        <div className={styles.tagsContainer}>
+        <div className={styles.tagsContainer} aria-label="Tags">
           {watchlist.tags.map((tag, index) => (
             <Tag key={index} text={tag} />
           ))}
         </div>
 
-        <h2 className="section-rectangle">
+        {/* Watchlist Progress */}
+        <p className="section-rectangle" aria-label={`Completed ${watchlist.completedCount} out of ${watchlist.totalCount}`}>
           Completed: {watchlist.completedCount}/{watchlist.totalCount}
-        </h2>
+        </p>
 
         <div className={styles.headerBottom}>
           {/* Search Bar */}
@@ -81,11 +83,14 @@ export default function SpecificWatchlist() {
       </section>
 
       <section className={styles.itemsSection} aria-labelledby="items-heading">
-        <div className={styles.itemsContainer}>
+        <h2 id="items-heading" className={styles.visuallyHidden}>Watchlist Items</h2>
+        <ul className={styles.itemsContainer}>
           {watchlist.items.map((item, index) => (
-            <Item key={index} name={item.name} link={item.link} />
+            <li key={index}>
+              <Item name={item.name} link={item.link} />
+            </li>
           ))}
-        </div>
+        </ul>
       </section>
     </>
   );
