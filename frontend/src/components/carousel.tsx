@@ -93,7 +93,7 @@ export default function Carousel({ type }: CarouselProps) {
         <Item
           key={i}
           name={`${itemPrefix} ${i}`}
-          link={`${baseLink}/${i}`}
+          link={`${baseLink}`}
         />
       );
     }
