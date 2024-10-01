@@ -1,3 +1,4 @@
+/* Watchlists Header */
 .watchlistsHeader {
     margin-top: 40px;
     margin-bottom: 40px;
@@ -14,7 +15,7 @@
 /* Search Form */
 .searchForm {
     flex: 1;
-    position: relative;
+    /* Removed position: relative; as it's unnecessary */
 }
 
 /* Visually Hidden Class for Accessibility */
@@ -50,18 +51,20 @@
 /* Search Input */
 .searchInput {
     border: none;
-    outline: none;
+    outline: none; /* Remove default outline */
     margin-left: 8px;
     font-size: 1rem;
     color: #212121;
     width: 100%;
 }
 
+/* Placeholder Text Color */
 .searchInput::placeholder {
     color: #EBD6DE;
     opacity: 1;
 }
 
+/* Optional: Vendor Prefixes for Placeholder */
 .searchInput::-webkit-input-placeholder {
     color: #EBD6DE;
     opacity: 1;
@@ -97,7 +100,7 @@
 }
 
 .manageSearchButton:focus {
-    outline: 2px solid #000;
+    outline: none; /* Remove focus outline */
 }
 
 /* Manage Search Icon */
@@ -119,16 +122,16 @@
     margin-bottom: 20px;
 }
 
-/* Ensure focus styles for interactive elements */
+/* Removed Focus Styles for Interactive Elements */
 .searchInput:focus {
-    outline: 2px solid #000;
-    border-radius: 3px;
+    outline: none; /* Ensure no outline appears on focus */
 }
 
 .manageSearchButton:focus {
-    outline: 2px solid #000;
+    outline: none;
 }
 
+/* Responsive Grid Adjustments */
 @media (min-width: 450px) {
     .itemsContainer {
         grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
